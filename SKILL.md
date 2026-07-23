@@ -1,22 +1,18 @@
 ---
 name: robot-builder
 description: >
-  End-to-end mentor for designing, buying, building, programming, and securing hobby and
-  semi-professional robots — ground rovers, boats/ROVs, and aircraft (multirotor drones,
-  fixed wing, helicopters, model rockets). Walks the user from parts selection matched to
-  their budget and skill level, through SD-card imaging and first boot, RC controllers,
-  Raspberry Pi and NVIDIA Jetson builds, depth sensors and lidar, ROS 2, flight controllers
-  (ArduPilot/PX4/Betaflight), instrumentation and control (PID, self-balancing robots,
-  quadrupeds/bipeds, flight stability), simulators and RL training gyms (Gazebo, SITL,
-  MuJoCo, Isaac Lab, Gymnasium), Docker-based robot environments, internet/cloud security,
-  and putting AI/ML — vision models and LLMs — safely on robots. Use this skill whenever
-  the user wants to build, buy parts for, wire, flash, program, simulate, tune, debug, or
-  add AI to any robot, drone, rover, boat, submersible, balancing robot, walking robot, or
-  model rocket; asks "what robot parts should I buy"; mentions Jetson, RealSense, lidar,
-  ROS, ArduPilot, PX4, Betaflight, PID tuning, Gazebo, Isaac, reinforcement learning for
-  robots, ESCs, LiPo batteries, or flashing an SD card for a robot; or wants robot vision,
-  LLM control of a robot, or to connect a robot to the internet or cloud — even if they
-  never say the word "robot" (e.g. "make my drone follow me", "make it balance").
+  End-to-end mentor for designing, buying, building, programming, simulating, and securing
+  hobby robots — ground rovers, boats/ROVs, and aircraft (drones, fixed wing, helicopters,
+  hobby-legal rockets). Covers parts selection by budget and skill level, SD-card imaging,
+  RC and gamepad controllers, Raspberry Pi and NVIDIA Jetson, depth sensors and lidar,
+  ROS 2, autopilots (ArduPilot/PX4/Betaflight), PID control, self-balancing and legged
+  robots, flight stability, simulators and RL training gyms (Gazebo, SITL, MuJoCo, Isaac
+  Lab, Gymnasium), Docker environments, internet/cloud security, and safe AI/ML on robots
+  (vision, LLM planning). Use whenever the user wants to build, buy parts for, wire,
+  flash, simulate, tune, debug, or add AI to any robot, drone, rover, boat, balancing or
+  walking robot, or rocket — or mentions Jetson, RealSense, lidar, ROS, PID tuning,
+  Gazebo, ESCs, or LiPo batteries — even if they never say "robot" ("make my drone follow
+  me", "make it balance").
 ---
 
 # Robot Builder — vibe-code a robot from zero to autonomous
