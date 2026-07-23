@@ -82,8 +82,8 @@ adapters and per-platform install guides live in [builds/](builds/):
 | Platform | Format | Status |
 |---|---|---|
 | **Claude** (claude.ai / Claude Code) | native skill (`robot-builder.skill`) | ✅ tested |
-| **OpenAI** — [builds/openai](builds/openai/) | Custom GPT instructions + knowledge; `AGENTS.md` for Codex | ⚠️ format-checked, untested on-platform |
-| **Gemini** — [builds/gemini](builds/gemini/) | Gem instructions + knowledge; `GEMINI.md` for Gemini CLI | ⚠️ format-checked, untested on-platform |
+| **OpenAI** — [builds/openai](builds/openai/) | Custom GPT instructions + knowledge; `AGENTS.md` for Codex | ✅ Custom GPT tested |
+| **Gemini** — [builds/gemini](builds/gemini/) | Gem instructions + knowledge; `GEMINI.md` for Gemini CLI | ✅ Gem tested (10-file knowledge cap — see install guide) |
 | **Hermes** (local Docker LLMs) — [builds/hermes](builds/hermes/) | system prompt + load-one-file knowledge | ❌ untested |
 | **OpenClaw** — [builds/openclaw](builds/openclaw/) | Claude-compatible skills folder | ❌ untested |
 

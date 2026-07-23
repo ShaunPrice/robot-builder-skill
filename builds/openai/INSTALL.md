@@ -1,8 +1,10 @@
 # OpenAI builds
 
-> ⚠️ **Status: format-checked, not end-to-end tested.** These follow OpenAI's documented
-> formats (Custom GPT instructions ≤8,000 chars, ≤20 knowledge files; AGENTS.md for
-> Codex), but haven't been exercised on-platform. Report issues on the repo.
+> ✅ **Status: Custom GPT build TESTED on-platform (2026-07-24).** A "Robot Builder" GPT
+> was created with these instructions + all 14 knowledge files and correctly handled a
+> beginner parts-selection scenario using knowledge-file specifics (T1/T2 tiers,
+> NiMH-before-LiPo for beginners, L298N warning, JGA25/JGB37 encoder motors, the 500 ms
+> watchdog, Pi Imager SSH setup). The AGENTS.md/Codex variant remains format-checked only.
 
 ## A. ChatGPT Custom GPT (recommended for chat use)
 

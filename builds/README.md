@@ -8,8 +8,8 @@ to the references flow into every platform.
 | Platform | Format | Directory / asset | Status |
 |---|---|---|---|
 | **Claude** (claude.ai, Claude Code) | Native skill (`.skill` / skills folder) | [`robot-builder.skill` release asset](https://github.com/ShaunPrice/robot-builder-skill/releases/latest), repo root | ✅ Tested — native platform |
-| **OpenAI** (ChatGPT Custom GPT, Codex CLI) | GPT Instructions + Knowledge files; `AGENTS.md` | [`openai/`](openai/) | ⚠️ Format-checked, not end-to-end tested |
-| **Google Gemini** (Gems, Gemini CLI) | Gem instructions + knowledge; `GEMINI.md` | [`gemini/`](gemini/) | ⚠️ Format-checked, not end-to-end tested |
+| **OpenAI** (ChatGPT Custom GPT, Codex CLI) | GPT Instructions + Knowledge files; `AGENTS.md` | [`openai/`](openai/) | ✅ Custom GPT tested on-platform (Codex variant format-checked) |
+| **Google Gemini** (Gems, Gemini CLI) | Gem instructions + knowledge; `GEMINI.md` | [`gemini/`](gemini/) | ✅ Gem tested on-platform — note the 10-file knowledge cap (CLI variant format-checked) |
 | **Hermes** (local Docker LLM stack) | System prompt + mounted docs | [`hermes/`](hermes/) | ❌ **UNTESTED** |
 | **OpenClaw** | Claude-compatible skills folder | [`openclaw/`](openclaw/) | ❌ **UNTESTED** |
 
