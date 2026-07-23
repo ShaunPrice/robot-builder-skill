@@ -1,25 +1,26 @@
 # OpenClaw build
 
-> ❌ **Status: UNTESTED.** OpenClaw's skill system follows the Claude-compatible
-> `SKILL.md` convention, so the native skill folder *should* drop straight in — but
-> this has not been verified against a live OpenClaw install, and OpenClaw moves fast.
-> Check the current OpenClaw docs for the exact skills directory and format before
-> relying on it, and report back via a repo issue either way.
+> ✅ **Status: install + discovery VERIFIED (2026-07-24) on OpenClaw 2026.6.33.**
+> `openclaw skills install <local-clone>` accepted the skill unmodified, placed it at
+> `~/.openclaw/workspace/skills/robot-builder`, and `openclaw skills list` reports it
+> **✓ ready** with the SKILL.md description parsed. The agent *runtime* (an LLM
+> answering through OpenClaw using the skill) was not exercised — that requires a
+> configured model provider/gateway; run one robot question after your normal OpenClaw
+> setup to confirm, and report via a repo issue either way.
 
-## Install (expected path)
-
-OpenClaw discovers skills from its workspace/config skills directory (commonly
-`~/.openclaw/skills/` — verify against your install's docs):
+## Install (verified)
 
 ```bash
-git clone https://github.com/ShaunPrice/robot-builder-skill.git ~/.openclaw/skills/robot-builder
+git clone https://github.com/ShaunPrice/robot-builder-skill.git /tmp/robot-builder-skill
+openclaw skills install /tmp/robot-builder-skill
+openclaw skills list   # → "✓ ready  robot-builder"
 ```
 
 The repo root **is** the skill: `SKILL.md` (frontmatter `name` + `description` +
-playbook) with `references/` beside it — the same layout Claude Code consumes, which is
-the format OpenClaw's skill loader targets. Restart the OpenClaw gateway/agent and ask
-it something robot-flavored ("what should I buy to build my first rover?") to confirm it
-triggers.
+playbook) with `references/` beside it — the same layout Claude Code consumes. OpenClaw
+copies it into its workspace skills directory; restart the gateway/agent and ask
+something robot-flavored ("what should I buy to build my first rover?") to confirm
+triggering.
 
 ## If auto-discovery doesn't work
 
