@@ -1,0 +1,58 @@
+<mujoco model="two_wheel_balancer">
+  <!-- A hobby-scale two-wheel self-balancing robot, matching the build described in
+       references/control-and-stability.md: ~0.7 kg, 40 mm wheels, TT-motor-class torque. -->
+  <option timestep="0.002" gravity="0 0 -9.81"/>
+
+  <visual>
+    <headlight ambient="0.4 0.4 0.4" diffuse="0.6 0.6 0.6"/>
+    <global offwidth="640" offheight="480"/>
+  </visual>
+
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" width="256" height="256"
+             rgb1="0.2 0.3 0.4" rgb2="0.15 0.2 0.28"/>
+    <material name="grid" texture="grid" texrepeat="6 6" reflectance="0.1"/>
+    <material name="chassis" rgba="0.85 0.35 0.1 1"/>
+    <material name="wheel" rgba="0.15 0.15 0.15 1"/>
+    <material name="head" rgba="0.9 0.8 0.2 1"/>
+  </asset>
+
+  <worldbody>
+    <geom name="floor" type="plane" size="6 6 0.1" material="grid" friction="1.0 0.005 0.0001"/>
+    <light pos="0 -1 2" dir="0 0.4 -1" diffuse="0.8 0.8 0.8"/>
+
+    <!-- Chassis: axle sits at wheel-center height (z = wheel radius). -->
+    <body name="chassis" pos="0 0 0.04">
+      <freejoint name="root"/>
+      <!-- Body is a tall box whose center of mass sits above the axle (inverted pendulum). -->
+      <geom name="body" type="box" size="0.035 0.06 0.09" pos="0 0 0.09"
+            mass="0.55" material="chassis"/>
+      <!-- "IMU/battery" block up top raises CoM — slower fall, easier to balance, like a real build. -->
+      <geom name="head" type="box" size="0.03 0.05 0.02" pos="0 0 0.20"
+            mass="0.15" material="head"/>
+      <site name="imu" pos="0 0 0.09"/>
+
+      <body name="left_wheel" pos="0 0.075 0">
+        <joint name="left_axle" type="hinge" axis="0 1 0" damping="0.0005"/>
+        <geom type="cylinder" size="0.04 0.012" quat="0.707107 0.707107 0 0"
+              mass="0.05" material="wheel" friction="1.2 0.005 0.0001"/>
+      </body>
+      <body name="right_wheel" pos="0 -0.075 0">
+        <joint name="right_axle" type="hinge" axis="0 1 0" damping="0.0005"/>
+        <geom type="cylinder" size="0.04 0.012" quat="0.707107 0.707107 0 0"
+              mass="0.05" material="wheel" friction="1.2 0.005 0.0001"/>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <!-- TT-motor-class torque limits (~0.35 N·m at the wheel). -->
+    <motor name="left_motor"  joint="left_axle"  ctrlrange="-0.35 0.35"/>
+    <motor name="right_motor" joint="right_axle" ctrlrange="-0.35 0.35"/>
+  </actuator>
+
+  <sensor>
+    <gyro name="gyro" site="imu"/>
+    <accelerometer name="accel" site="imu"/>
+  </sensor>
+</mujoco>
