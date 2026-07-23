@@ -66,8 +66,8 @@ invoke it explicitly with `/robot-builder`.
 **Project-scoped** (share with a team): clone into `.claude/skills/robot-builder/` inside
 your project repo.
 
-**Claude.ai**: zip the folder into a `.skill` file and upload under
-Settings → Capabilities, or attach the markdown files to a Project's knowledge.
+**Claude.ai**: download **[robot-builder.skill](https://github.com/ShaunPrice/robot-builder-skill/releases/latest)**
+from the latest release and upload it under Settings → Capabilities → Skills.
 
 New here? **Start with the [Training Manual](TRAINING_MANUAL.md)** — installation in
 detail, your first prompts, an 8-week beginner learning path, and the safety and security

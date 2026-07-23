@@ -40,9 +40,10 @@ with `/robot-builder`.
 **Project install** (share with a team via git): put the folder at
 `.claude/skills/robot-builder/` inside the project repo and commit it.
 
-**Claude.ai (web/app)**: package the folder as a `.skill` file (zip the `robot-builder`
-directory) and upload it under Settings → Capabilities/Skills, or simply attach the
-`SKILL.md` and reference files to a Project's knowledge.
+**Claude.ai (web/app)**: download the prepackaged `robot-builder.skill` from the repo's
+[latest release](https://github.com/ShaunPrice/robot-builder-skill/releases/latest) and
+upload it under Settings → Capabilities → Skills (or attach the `SKILL.md` and reference
+files to a Project's knowledge).
 
 ## 3. Your first session (10 minutes)
 
