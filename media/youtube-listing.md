@@ -58,9 +58,7 @@ NVIDIA Jetson, hobby robotics, maker, DIY robot, machine learning, physics simul
   self-contained.
 - **End screen**: link element pointing at the GitHub repo URL.
 
-## ⚠ Before publishing
+## Publishing notes
 
-The video and description point at github.com/ShaunPrice/robot-builder-skill, which is
-currently **private** — viewers would hit a 404. Either make the repo public first
-(`gh repo edit ShaunPrice/robot-builder-skill --visibility public`) or remove the link
-from the description and outro.
+The repo is public, so the video/description link works for viewers. Music bed: reused
+from the in-house salesvideo pipeline; narration is ElevenLabs, art is gpt-image-2.
