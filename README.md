@@ -4,6 +4,9 @@
 
 # Robot Builder — a Claude skill for vibe-coding robots
 
+> 🎬 **[Watch the 70-second intro](media/Robot-Builder-intro-v1.mp4)** — narrated tour of
+> the skill and its simulated self-balancing robot.
+
 **Robot Builder** turns Claude into a robotics mentor and build partner: it walks you from
 *"what should I buy for my budget?"* through wiring, SD-card flashing, controllers,
 Raspberry Pi and NVIDIA Jetson builds, ROS 2, PID control, simulators and RL training
