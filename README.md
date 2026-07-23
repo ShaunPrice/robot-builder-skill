@@ -4,8 +4,15 @@
 
 # Robot Builder — a Claude skill for vibe-coding robots
 
-> 🎬 **[Watch the 70-second intro](media/Robot-Builder-intro-v1.mp4)** — narrated tour of
-> the skill and its simulated self-balancing robot.
+<p align="center">
+  <a href="https://youtu.be/QnRDa8EUHyM">
+    <img src="https://img.youtube.com/vi/QnRDa8EUHyM/maxresdefault.jpg" alt="Watch the Robot Builder intro on YouTube" width="70%"/>
+  </a>
+  <br/>
+  🎬 <a href="https://youtu.be/QnRDa8EUHyM"><b>Watch the 70-second intro on YouTube</b></a> —
+  narrated tour of the skill and its simulated self-balancing robot
+  (<a href="media/Robot-Builder-intro-v1.mp4">local copy</a>).
+</p>
 
 **Robot Builder** turns Claude into a robotics mentor and build partner: it walks you from
 *"what should I buy for my budget?"* through wiring, SD-card flashing, controllers,
