@@ -73,6 +73,20 @@ New here? **Start with the [Training Manual](TRAINING_MANUAL.md)** — installat
 detail, your first prompts, an 8-week beginner learning path, and the safety and security
 short courses.
 
+### Not using Claude? Builds for other assistants
+
+The knowledge is plain markdown, so it ports. Prebuilt packages for each platform are
+attached to the [latest release](https://github.com/ShaunPrice/robot-builder-skill/releases/latest);
+adapters and per-platform install guides live in [builds/](builds/):
+
+| Platform | Format | Status |
+|---|---|---|
+| **Claude** (claude.ai / Claude Code) | native skill (`robot-builder.skill`) | ✅ tested |
+| **OpenAI** — [builds/openai](builds/openai/) | Custom GPT instructions + knowledge; `AGENTS.md` for Codex | ⚠️ format-checked, untested on-platform |
+| **Gemini** — [builds/gemini](builds/gemini/) | Gem instructions + knowledge; `GEMINI.md` for Gemini CLI | ⚠️ format-checked, untested on-platform |
+| **Hermes** (local Docker LLMs) — [builds/hermes](builds/hermes/) | system prompt + load-one-file knowledge | ❌ untested |
+| **OpenClaw** — [builds/openclaw](builds/openclaw/) | Claude-compatible skills folder | ❌ untested |
+
 ## What's inside
 
 | Module | Covers |
