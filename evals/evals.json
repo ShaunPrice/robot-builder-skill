@@ -1,0 +1,35 @@
+{
+  "skill_name": "robot-builder",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I've got about $250 AUD and I've never built anything electronic before. My 10 year old and I want to build a robot we can drive around the house with a controller, and maybe program later. What should we buy?",
+      "expected_output": "Profiles budget/skill/goal, recommends a T0/T1 tier build with specific parts (kit or Pi rover, gamepad, batteries, tools), warns about LiPo safety, reserves budget for sundries, offers an upgrade path to programmability.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I have a Jetson Orin Nano and a RealSense D435i. I want my rover to follow me around the backyard. It already drives via teleop. Walk me through it.",
+      "expected_output": "TensorRT-exported YOLO person detection + tracking, depth-based range/bearing, follow controller publishing velocity goals behind a watchdog/safety layer, warns about IR depth outdoors in sunlight, staged testing (on blocks first).",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "How do I check on my robot when I'm away from home? I was going to forward port 22 on my router to the Pi.",
+      "expected_output": "Refuses port-forwarding as the approach, recommends Tailscale/WireGuard overlay VPN, SSH key hardening, firewall default-deny, and isolated IoT network; explains why exposed robots are scanned/compromised.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "My two-wheel balancing robot oscillates violently and falls over after about 2 seconds. ESP32, MPU6050, TB6612, 200Hz loop, complementary filter, single PID on tilt angle. Gains Kp=40 Ki=5 Kd=0.5.",
+      "expected_output": "Routes to control-and-stability.md: checks loop-rate jitter and dt handling, suggests integral windup clamp / drop Ki initially, raise Kd relative to Kp, verify filter coefficient and IMU mounting/vibration, motor deadband feedforward, battery-voltage scaling; recommends tuning sequence Kp then Kd then tiny Ki, one gain at a time with logged plots.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "I want my quadruped to learn to walk. I have a gaming PC with an RTX 4080. Where do I start?",
+      "expected_output": "Routes to simulation-and-gyms.md + control-and-stability.md: RL in simulation (Isaac Lab with shipped quadruped example tasks as templates), Gymnasium mechanics first via CartPole/stable-baselines3, domain randomization and sim2real checklist, honest actuator-cost realities for real hardware, deploy behind deterministic safety layer.",
+      "files": []
+    }
+  ]
+}
