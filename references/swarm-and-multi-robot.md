@@ -6,6 +6,53 @@ are, and who decides who does what. A swarm is a coordination + comms + shared-l
 problem wearing a robot costume. Get those three right and ten cheap rovers do useful work;
 get them wrong and you have ten expensive rovers taking turns crashing into each other.
 
+## First decision: how will each robot know where it (and its neighbours) are?
+
+Answer this **before you choose a platform** — it is the decision the whole swarm lives or dies
+on, and the one most likely to sink a beginner's project. Every coordinated behaviour (holding a
+formation, "don't collide", "cover this area") assumes each robot knows, at least roughly, its own
+pose and its neighbours'. **If you can't name how that happens, you don't have a swarm design yet —
+you have a wish.** Choose the localization method first, then pick the platform that serves it.
+
+**The achievable default for a first swarm — steer here unless there's a specific reason not to:**
+a small **wheeled ground swarm (start with 3) with a fiducial marker (ArUco / AprilTag) on top of
+each robot and one overhead webcam.** OpenCV reads every tag's ID and pose from the ceiling camera,
+so a laptop knows each robot's (x, y, heading) in one shared frame — a cheap, real "indoor GPS" —
+and the coordinator turns that into targets. Add a **distance sensor (ToF VL53L0X or ultrasonic) per
+robot** for local, camera-independent collision avoidance. Localization cost: one ~$25 webcam plus a
+printed paper tag per robot. It is indoor, it cannot fall out of the sky, there are no regulations,
+and — crucially — the localization is actually *solved*, not hand-waved.
+
+**Why not a flying swarm first?** An indoor *flying* swarm has no cheap localization answer: GPS
+does not work indoors, and holding formation needs UWB beacons or motion capture (expensive) or
+drift-prone optical flow. So an indoor drone swarm is an **advanced** project, not a beginner one.
+If a user asks for one, say so, and offer either the wheeled swarm above (learn coordination cheaply
+first) or an **outdoor GPS** drone swarm (where localization is just per-drone GPS). Never design an
+indoor flying swarm around a localization method you cannot actually supply — that is precisely the
+hole that strands a project at unit two.
+
+## Design completeness check — loop before you commit
+
+A swarm design is not finished when it sounds cool; it is finished when every one of these has a
+concrete, buildable answer. Before presenting a design, walk the checklist — and **if any box is
+empty or hand-wavy, change the design and walk it again. Loop until all five hold:**
+
+1. **Localization** — how does each robot know its own pose and its neighbours'? A *named* method,
+   within the user's budget and skill — not "we'll figure it out later".
+2. **Comms** — which link carries which messages, at what rate, with latency margin? (Radio matched
+   to message rate — see Comms below.)
+3. **Collision avoidance** — what stops two units hitting each other *locally*, independent of the
+   coordinator? (A per-robot sensor/rule, not just the plan.)
+4. **Coordinator / architecture** — centralized or decentralized, and who decides what? One clear
+   place to reason about and to E-stop.
+5. **Achievability** — can *this* user build N of these at their skill level and budget, and is it
+   legal and safe where they will run it?
+
+The failure this catches is the common one: a design complete on four of five and silently unsolved
+on **localization**. That is not a smaller problem — it is the whole problem. If localization has no
+answer the design is not achievable; say so plainly and pivot (usually to the wheeled + fiducials
+default above) rather than shipping a plan with a hole in it.
+
 ## Start with two, and make each unit cheap
 
 Two rules save more grief than anything else in this file.
@@ -95,13 +142,18 @@ relative localization is genuinely the crux. Options, honestly ranked by pain:
 - **GPS-RTK** (outdoor): centimetre-level absolute position per robot, so relative position
   is just subtraction. The clean outdoor answer for agriculture/coverage; needs a base
   station and clear sky.
-- **Fiducials / vision** (cheap, fiddly): AprilTags on each robot plus an overhead camera,
-  or robots reading tags on each other (sensors.md). Cheapest path to relative pose; fussy
-  with lighting, occlusion, and field of view.
+- **Fiducials / vision** (cheap — the recommended *starter* for slow ground robots): ArUco /
+  AprilTags on each robot plus one overhead camera gives every robot's pose in a shared frame — a
+  real "indoor GPS"; or robots read tags on each other for direct relative pose (sensors.md).
+  Cheapest path to relative pose and the achievable default for a first wheeled swarm (see *First
+  decision*). Keep the lighting even and the tags in the camera's field of view; camera frame rate
+  caps how *fast* the robots can safely move.
 
-Be clear-eyed with users: outdoors, GPS-RTK largely solves it. Indoors, without motion
-capture, you are choosing between the imperfections of shared SLAM and the cost of UWB
-beacons — there is no free, accurate, indoor relative-localization option, and pretending
+Be clear-eyed with users, and split the indoor answer by speed. Outdoors, GPS-RTK largely solves
+it. Indoors for **slow ground robots**, an overhead camera + fiducials is the cheap answer that
+actually works — that is the recommended starter. Indoors for **fast or flying** robots, where a
+ceiling camera can't keep up and there is no floor to sit on, you are back to the cost of UWB
+beacons or motion capture — there is no free, accurate, *high-rate* indoor option, and pretending
 otherwise is how a swarm project stalls at unit two.
 
 ## Simulate the coordination first

@@ -98,6 +98,15 @@ This skill assumes the user builds *with* you, iteratively. Apply these habits:
   version, what worked. You (the AI) should offer to update it after each milestone.
 - **Debug with data, not guesses.** Multimeter before code changes for electrical issues;
   `ros2 topic echo` / autopilot logs before parameter changes for software issues.
+- **Check the design is complete before you commit — loop until it is.** Before recommending a
+  build (especially autonomy or multi-robot), verify it has *every* capability the goal actually
+  needs, and loop back if one is missing. A swarm with no way for each robot to know where its
+  neighbours are, an autonomous rover with no localization, a drone with no failsafe — these are
+  holes, not details, and the one most often left unsolved is **localization**. Name the gap and
+  change the design rather than proposing a plan that cannot work. For swarms, walk the five-point
+  completeness check in [swarm-and-multi-robot.md](references/swarm-and-multi-robot.md) and prefer
+  its achievable default (a wheeled swarm with fiducials + an overhead camera) over a flying swarm
+  whose indoor localization you can't supply.
 
 ## Safety rules you must enforce (not optional)
 
