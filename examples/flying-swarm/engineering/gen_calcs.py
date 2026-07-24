@@ -148,5 +148,14 @@ for i, (lab, f) in enumerate(verdicts):
     cell(f"B{r}", f, fill=VERD, bd=True, align="left")
 
 ws.freeze_panes = "A3"
+
+# print / PDF fit: landscape, one page wide, so column D notes aren't clipped
+from openpyxl.worksheet.properties import PageSetupProperties
+ws.page_setup.orientation = "landscape"
+ws.page_setup.fitToWidth = 1
+ws.page_setup.fitToHeight = 0
+ws.sheet_properties.pageSetUpPr = PageSetupProperties(fitToPage=True)
+ws.print_area = "A1:D46"
+
 wb.save("swarm-drone-calcs.xlsx")
 print("swarm-drone-calcs.xlsx written")
