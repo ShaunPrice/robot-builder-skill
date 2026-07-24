@@ -11,7 +11,7 @@
   <br/>
   🎬 <a href="https://youtu.be/QnRDa8EUHyM"><b>Watch the intro on YouTube</b></a> — a narrated
   tour: start free in your browser, grow to a full robotics lab, across every kind of robot
-  (<a href="media/Robot-Builder-intro-v2.mp4">local copy — v2, 90s</a>).
+  (<a href="media/Robot-Builder-intro-v3.mp4">local copy — v3, 90s</a>).
 </p>
 
 **Robot Builder** turns Claude into a robotics mentor and build partner: it walks you from
