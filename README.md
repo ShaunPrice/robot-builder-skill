@@ -87,6 +87,22 @@ adapters and per-platform install guides live in [builds/](builds/):
 | **Hermes** (local Docker LLMs) — [builds/hermes](builds/hermes/) | native skill folder (Claude format) or system prompt + knowledge | ✅ tested with local Gemma4-4B |
 | **OpenClaw** — [builds/openclaw](builds/openclaw/) | `openclaw skills install` (Claude-compatible folder) | ✅ install/discovery verified |
 
+### Low-cost / free option
+
+No Claude / ChatGPT / Gemini subscription? Host the mentor on **[Poe](https://poe.com)** — free to
+build, with real retrieval over the knowledge file and a shareable bot link a learner can just click:
+
+1. Sign up free at [poe.com](https://poe.com) (email / Google / Apple — no card).
+2. **Create bot** and pick an economical base model (a mid-tier Claude, GPT, or Gemini) to stretch the free daily points.
+3. Paste the persona from [`builds/openai/gpt-instructions.md`](builds/openai/gpt-instructions.md) into the **Prompt** field — if Poe truncates it, keep the core; the detail lives in the knowledge file.
+4. Grab the one-file knowledge base `robot-builder-complete.md` (in the Gemini build's `knowledge-gem/`, or run `scripts/make_builds.sh`). Poe rejects `.md`, so copy it first: `cp robot-builder-complete.md robot-builder-complete.txt`
+5. Under **Knowledge Base**, upload the `.txt` (optionally enable **Cite sources**).
+6. **Create**, ask a beginner question to confirm it quotes the file, then share your `poe.com/YourBot` link.
+
+Free daily points cover light Q&A; heavy use wants Poe's ~$5/mo plan. **Prefer $0 with no metering?**
+**[Mistral Le Chat](https://chat.mistral.ai)** is free (no card), uploads `robot-builder-complete.md`
+natively as a RAG "Library", and is capped at ~25 messages/day.
+
 ## What's inside
 
 | Module | Covers |
