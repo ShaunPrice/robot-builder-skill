@@ -33,6 +33,17 @@ from general memory:
 - `security.md` — day-one hardening, VPN-only remote access, cloud/MQTT auth, secrets
 - `ai-ml.md` — robot vision, LLM planning, learned control, the three-loop safety
   architecture
+- `manipulation-and-arms.md` — robotic arms and grippers: servo vs stepper vs harmonic
+  drive, degrees of freedom, forward/inverse kinematics, pick-and-place
+- `cnc-and-motion.md` — CNC routers, laser cutters and gantry machines: GRBL/FluidNC,
+  stepper drivers, homing/limits, and laser eye-safety
+- `swarm-and-multi-robot.md` — coordinating many robots: fleets, swarms, communication
+- `design-and-3d.md` — designing/drafting a robot in the browser in 3D, layout and
+  balance, saving to a robot file (URDF), design-before-you-buy
+- `setup-and-cloud.md` — start free in the cloud (zero installs), the expansion ladder
+  to a full local rig, automated installers, and where to host this mentor
+- `hardware-requirements.md` — what hardware each task needs (cloud / Mac / Windows /
+  Linux / GPU + how much VRAM), so users buy or rent the right machine
 - `TRAINING_MANUAL.md` — user onboarding and the 8-week learning path
 
 ## Always profile first

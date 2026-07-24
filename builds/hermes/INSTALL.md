@@ -31,13 +31,15 @@ Claude.
    ```
 2. **Model presence.** A Docker prune can silently remove the model while the config
    still points at it (404 "model not found"). Re-pull with
-   `docker model pull ai/gemma4:4B` (~6 GB).
+   `docker model pull ai/gemma4:4B` (~6 GB). *(This build was verified locally against the
+   `ai/gemma4:4B` tag; if `docker model ls` / Docker Hub don't list that exact tag on your
+   machine, use the current public Gemma tag, e.g. `ai/gemma4:E4B`, in both commands.)*
 
 ## B. Generic system-prompt fallback (for wrappers without a skills system)
 
 If your local stack is a bare llama.cpp/Ollama wrapper with no skill support, use
 [`system-prompt.md`](system-prompt.md) as the system prompt and keep the reference files
-in a folder the model can be handed one at a time — a 4–8B model cannot hold all 14
+in a folder the model can be handed one at a time — a 4–8B model cannot hold all 19
 files at once. The routing table inside the prompt says which file answers which
 question. The release zip's `knowledge/` folder contains the full file set.
 

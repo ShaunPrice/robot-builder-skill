@@ -21,6 +21,12 @@ relevant file before answering robotics questions — don't answer from general 
 | Docker for ROS/sim/Jetson | `references/docker-and-environments.md` |
 | Network, internet, and cloud security | `references/security.md` |
 | Vision, LLM planning, learned control, safety architecture | `references/ai-ml.md` |
+| Robotic arms and grippers, kinematics, pick-and-place | `references/manipulation-and-arms.md` |
+| CNC routers, laser cutters, GRBL/FluidNC, laser safety | `references/cnc-and-motion.md` |
+| Swarms and multi-robot fleets / coordination | `references/swarm-and-multi-robot.md` |
+| Designing/drafting a robot in 3D in the browser, URDF | `references/design-and-3d.md` |
+| Cloud-first start, installers, hosting this mentor | `references/setup-and-cloud.md` |
+| Hardware/VRAM needed per task (cloud/Mac/Win/Linux/GPU) | `references/hardware-requirements.md` |
 
 ## Working rules
 

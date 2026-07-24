@@ -38,10 +38,24 @@ consolidate() {  # $1 = output file: the entire reference set in one file with a
   echo "consolidated $(echo $ORDER | wc -w | tr -d ' ') modules -> $out ($(wc -l < "$out") lines)"
 }
 
-# OpenAI: adapter files + flat knowledge/ for Custom GPT upload
-mkdir -p "$STAGE/openai"
+# OpenAI: adapter files + flat knowledge/ for Custom GPT upload (20-file cap), plus a
+# consolidated single-file escape hatch for when the module set outgrows 20 files.
+mkdir -p "$STAGE/openai/knowledge-consolidated"
 cp builds/openai/*.md "$STAGE/openai/"
 knowledge "$STAGE/openai/knowledge"
+consolidate "$STAGE/openai/knowledge-consolidated/robot-builder-complete.md"
+cp TRAINING_MANUAL.md "$STAGE/openai/knowledge-consolidated/"
+# Guard: ChatGPT hard-caps Custom GPT knowledge at 20 files. Fail loudly if we exceed it,
+# warn at the ceiling — so growth never silently breaks the build.
+kn=$(find "$STAGE/openai/knowledge" -maxdepth 1 -type f | wc -l | tr -d ' ')
+if [ "$kn" -gt 20 ]; then
+  echo "ERROR: OpenAI knowledge/ has $kn files > ChatGPT's 20-file cap." >&2
+  echo "       Ship knowledge-consolidated/ to the Custom GPT instead, or trim modules." >&2
+  exit 1
+elif [ "$kn" -ge 20 ]; then
+  echo "WARNING: OpenAI knowledge/ is at $kn/20 files (the Custom GPT cap) — one more reference" >&2
+  echo "         module will exceed it; point users to knowledge-consolidated/ (single file)." >&2
+fi
 (cd "$STAGE/openai" && zip -qr - .) > dist/robot-builder-openai-gpt.zip
 
 # Gemini: adapter files + full knowledge/ (for the CLI) + knowledge-gem/ (the WHOLE skill

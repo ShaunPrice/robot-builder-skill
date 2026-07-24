@@ -1,7 +1,7 @@
 # OpenAI builds
 
 > ✅ **Status: Custom GPT build TESTED on-platform (2026-07-24).** A "Robot Builder" GPT
-> was created with these instructions + all 14 knowledge files and correctly handled a
+> was created with these instructions + the knowledge files and correctly handled a
 > beginner parts-selection scenario using knowledge-file specifics (T1/T2 tiers,
 > NiMH-before-LiPo for beginners, L298N warning, JGA25/JGB37 encoder motors, the 500 ms
 > watchdog, Pi Imager SSH setup). The AGENTS.md/Codex variant remains format-checked only.
@@ -14,8 +14,10 @@
      parts list to machine learning, across ground, water, and air."
    - **Instructions**: paste the body of [`gpt-instructions.md`](gpt-instructions.md)
      (everything below its `---` line).
-3. **Knowledge**: upload all 13 files from the repo's `references/` folder plus
-   `TRAINING_MANUAL.md` (14 files — under the 20-file limit). The prebuilt
+3. **Knowledge**: upload all 19 files from the repo's `references/` folder plus
+   `TRAINING_MANUAL.md` (20 files — exactly at ChatGPT's 20-file limit). If the module
+   set ever grows past this, upload the single `knowledge-consolidated/robot-builder-complete.md`
+   instead (the whole skill in one file). The prebuilt
    `robot-builder-openai-gpt.zip` release asset contains exactly this set plus the
    instructions file — unzip and drag them in.
 4. **Capabilities**: enable Web Search (part prices move) and Code Interpreter (for the

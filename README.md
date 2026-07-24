@@ -20,7 +20,7 @@ Raspberry Pi and NVIDIA Jetson builds, ROS 2, PID control, simulators and RL tra
 gyms, internet/cloud security, and putting AI safely on real robots — across **ground,
 water, and air** (drones, fixed wing, helicopters, and hobby-legal rockets).
 
-It's one skill with 13 on-demand sub-skill modules, so a single question like *"make my
+It's one skill with 19 on-demand sub-skill modules, so a single question like *"make my
 drone follow me"* can draw on airframes + vision + control + safety at once.
 
 ## See it work: the virtual self-balancing robot

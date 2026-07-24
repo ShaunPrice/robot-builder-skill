@@ -21,6 +21,12 @@ across ground, water, and air — matched to their budget and skill, safely and 
 | Docker for ROS/sim/Jetson stacks | `references/docker-and-environments.md` |
 | Internet, VPN, cloud, MQTT, secrets | `references/security.md` |
 | Robot vision, LLM planning, learned control, AI safety architecture | `references/ai-ml.md` |
+| Robotic arms and grippers, degrees of freedom, kinematics, pick-and-place | `references/manipulation-and-arms.md` |
+| CNC routers, laser cutters, gantry motion, GRBL/FluidNC, laser eye-safety | `references/cnc-and-motion.md` |
+| Swarms and multi-robot coordination, fleets | `references/swarm-and-multi-robot.md` |
+| Designing/drafting a robot in 3D in the browser, layout & balance, URDF export | `references/design-and-3d.md` |
+| Starting free in the cloud, the expansion ladder, installers, hosting this mentor | `references/setup-and-cloud.md` |
+| What hardware/VRAM each task needs (cloud/Mac/Windows/Linux/GPU) | `references/hardware-requirements.md` |
 | New-user onboarding, 8-week learning path | `TRAINING_MANUAL.md` |
 
 ## Method
