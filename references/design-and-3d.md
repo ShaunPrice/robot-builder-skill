@@ -106,3 +106,14 @@ mesh so the accurate part shows up in sim and RViz.
 - **Onshape/FreeCAD/Fusion** → real fabrication CAD: printable, dimensioned, toleranced STLs.
 
 Draft it, look at it, sim it, then build it. The screen is where mistakes are free.
+
+## The bundled drafter template
+
+A ready-to-publish version of the browser drafter ships in this skill at
+`assets/robot-drafter.html` — a self-contained page (no libraries, no install) with
+plain-language controls, an orbit 3D view, a balance-point (center-of-gravity) marker,
+camera/lidar field-of-view, live design checks, and a "save robot file" button that emits
+URDF. Publish it as an artifact and customize it per the user's robot, or hand it to them
+as a starting point. It deliberately uses everyday words over jargon (see SKILL.md's
+"assume no jargon" rule) — the point is that a beginner can lay out a robot before they
+have learned a single robotics term.

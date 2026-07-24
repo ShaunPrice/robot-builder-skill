@@ -1,0 +1,488 @@
+<style>
+  :root{
+    --bg:#eef1f7; --panel:#ffffff; --panel2:#f5f8fd; --ink:#0d131c; --muted:#5b6675;
+    --line:#d6deeb; --accent:#0891b2; --accent-ink:#06414f; --accent-soft:rgba(8,145,178,.12);
+    --robot:#e2681c; --grid:rgba(8,145,178,.20); --warn:#c2410c; --good:#15803d; --shadow:rgba(15,30,60,.12);
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0b0e14; --panel:#131a24; --panel2:#0f1620; --ink:#e6edf6; --muted:#8b97a8;
+      --line:#24303f; --accent:#22d3ee; --accent-ink:#bdf1fb; --accent-soft:rgba(34,211,238,.14);
+      --robot:#ff7a29; --grid:rgba(34,211,238,.16); --warn:#fb923c; --good:#4ade80; --shadow:rgba(0,0,0,.45);
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#eef1f7; --panel:#ffffff; --panel2:#f5f8fd; --ink:#0d131c; --muted:#5b6675;
+    --line:#d6deeb; --accent:#0891b2; --accent-ink:#06414f; --accent-soft:rgba(8,145,178,.12);
+    --robot:#e2681c; --grid:rgba(8,145,178,.20); --warn:#c2410c; --good:#15803d; --shadow:rgba(15,30,60,.12);
+    color-scheme:light;
+  }
+  :root[data-theme="dark"]{
+    --bg:#0b0e14; --panel:#131a24; --panel2:#0f1620; --ink:#e6edf6; --muted:#8b97a8;
+    --line:#24303f; --accent:#22d3ee; --accent-ink:#bdf1fb; --accent-soft:rgba(34,211,238,.14);
+    --robot:#ff7a29; --grid:rgba(34,211,238,.16); --warn:#fb923c; --good:#4ade80; --shadow:rgba(0,0,0,.45);
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  body{margin:0}
+  .app{
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    background:var(--bg); color:var(--ink); min-height:100vh;
+    display:grid; grid-template-rows:auto 1fr; gap:0;
+  }
+  .topbar{
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    padding:12px 18px; border-bottom:1px solid var(--line); background:var(--panel);
+  }
+  .brand{display:flex; align-items:baseline; gap:10px}
+  .brand b{font-size:15px; letter-spacing:.2px}
+  .brand span{font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.14em}
+  .spacer{flex:1}
+  .viewbtns{display:flex; gap:4px; background:var(--panel2); border:1px solid var(--line); border-radius:9px; padding:3px}
+  .viewbtns button, .ghost{
+    font:inherit; font-size:12px; color:var(--muted); background:transparent; border:0;
+    padding:6px 11px; border-radius:6px; cursor:pointer; letter-spacing:.02em;
+  }
+  .viewbtns button:hover{color:var(--ink)}
+  .viewbtns button.on{background:var(--accent-soft); color:var(--accent-ink)}
+  .cta{
+    font:inherit; font-size:12.5px; font-weight:600; cursor:pointer;
+    background:var(--accent); color:#04222a; border:0; padding:8px 14px; border-radius:8px;
+    letter-spacing:.02em;
+  }
+  :root[data-theme="dark"] .cta, @media (prefers-color-scheme:dark){.cta{color:#04222a}}
+  .cta:hover{filter:brightness(1.08)}
+  .ghost{border:1px solid var(--line); background:var(--panel)}
+  .ghost:hover{color:var(--ink); border-color:var(--accent)}
+  .main{display:grid; grid-template-columns:236px 1fr 214px; min-height:0}
+  @media (max-width:880px){ .main{grid-template-columns:1fr} .side,.readout{border:0!important} .stage{order:-1;min-height:52vh} }
+  .side{padding:16px 16px 24px; border-right:1px solid var(--line); overflow:auto; background:var(--panel)}
+  .readout{padding:16px; border-left:1px solid var(--line); overflow:auto; background:var(--panel)}
+  .stage{position:relative; min-height:60vh; background:
+      radial-gradient(120% 90% at 50% 12%, color-mix(in srgb, var(--accent) 7%, var(--bg)), var(--bg) 70%);}
+  canvas{display:block; width:100%; height:100%; touch-action:none; cursor:grab}
+  canvas:active{cursor:grabbing}
+  .hint{position:absolute; left:14px; bottom:12px; font-size:11px; color:var(--muted); pointer-events:none}
+  .grouplabel{font-size:10.5px; text-transform:uppercase; letter-spacing:.16em; color:var(--muted); margin:18px 0 9px}
+  .grouplabel:first-child{margin-top:0}
+  .ctl{margin-bottom:13px}
+  .ctl .row{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:5px}
+  .ctl label{font-size:12.5px}
+  .ctl .val{font-size:12px; color:var(--accent-ink); font-variant-numeric:tabular-nums;
+    font-family:ui-monospace,"SF Mono",Menlo,monospace}
+  input[type=range]{width:100%; accent-color:var(--accent); height:20px}
+  .seg{display:flex; gap:4px}
+  .seg button{flex:1; font:inherit; font-size:12px; padding:7px 0; border:1px solid var(--line);
+    background:var(--panel2); color:var(--muted); border-radius:7px; cursor:pointer}
+  .seg button.on{border-color:var(--accent); color:var(--accent-ink); background:var(--accent-soft)}
+  .toggle{display:flex; align-items:center; justify-content:space-between; padding:9px 0; border-top:1px solid var(--line)}
+  .toggle:first-of-type{border-top:0}
+  .toggle label{font-size:12.5px}
+  .switch{position:relative; width:38px; height:21px; flex:none}
+  .switch input{opacity:0; width:0; height:0}
+  .switch .tr{position:absolute; inset:0; background:var(--line); border-radius:99px; transition:.15s}
+  .switch .tr::after{content:""; position:absolute; top:2px; left:2px; width:17px; height:17px; border-radius:50%;
+    background:#fff; transition:.15s}
+  .switch input:checked + .tr{background:var(--accent)}
+  .switch input:checked + .tr::after{transform:translateX(17px)}
+  .stat{display:flex; justify-content:space-between; align-items:baseline; padding:7px 0; border-bottom:1px dashed var(--line)}
+  .stat .k{font-size:12px; color:var(--muted)}
+  .stat .v{font-size:13px; font-variant-numeric:tabular-nums; font-family:ui-monospace,"SF Mono",Menlo,monospace}
+  .checks{margin-top:14px; display:flex; flex-direction:column; gap:7px}
+  .check{display:flex; gap:8px; align-items:flex-start; font-size:11.5px; line-height:1.35}
+  .check .dot{width:8px; height:8px; border-radius:50%; margin-top:4px; flex:none}
+  .check.ok .dot{background:var(--good)} .check.warn .dot{background:var(--warn)}
+  .check.ok{color:var(--muted)} .check.warn{color:var(--ink)}
+  dialog{border:1px solid var(--line); border-radius:12px; background:var(--panel); color:var(--ink);
+    max-width:560px; width:92vw; padding:0; box-shadow:0 24px 60px var(--shadow)}
+  dialog::backdrop{background:rgba(3,8,16,.55)}
+  .dlg-h{display:flex; justify-content:space-between; align-items:center; padding:14px 18px; border-bottom:1px solid var(--line)}
+  .dlg-h b{font-size:14px}
+  .dlg-b{padding:16px 18px}
+  .dlg-b p{margin:0 0 10px; font-size:12.5px; color:var(--muted)}
+  textarea{width:100%; height:300px; resize:vertical; background:var(--panel2); color:var(--ink);
+    border:1px solid var(--line); border-radius:8px; padding:11px; font-family:ui-monospace,"SF Mono",Menlo,monospace;
+    font-size:11.5px; line-height:1.5}
+</style>
+
+<div class="app">
+  <div class="topbar">
+    <div class="brand"><b>Robot Drafter</b><span>layout &amp; 3D preview</span></div>
+    <div class="spacer"></div>
+    <div class="viewbtns" id="views">
+      <button data-view="iso" class="on">Iso</button>
+      <button data-view="front">Front</button>
+      <button data-view="side">Side</button>
+      <button data-view="top">Top</button>
+    </div>
+    <button class="ghost" id="reset">Reset view</button>
+    <button class="cta" id="export" title="Saves a URDF file — the standard robot description used by the ROS/Gazebo simulators">Save robot file</button>
+  </div>
+
+  <div class="main">
+    <aside class="side">
+      <div class="grouplabel">How it drives</div>
+      <div class="seg" id="drive">
+        <button data-d="2wd" class="on" title="Two driven wheels plus a caster — the simplest, best for a first robot">2 wheels</button>
+        <button data-d="4wd" title="Four driven wheels — more grip and push">4 wheels</button>
+        <button data-d="track" title="Tank-style tracks — great off-road, but poorer position tracking">Tracks</button>
+      </div>
+
+      <div class="grouplabel">Body size (mm)</div>
+      <div class="ctl"><div class="row"><label>Length</label><span class="val" id="lenV"></span></div>
+        <input type="range" id="len" min="90" max="600" step="5"></div>
+      <div class="ctl"><div class="row"><label>Width</label><span class="val" id="widV"></span></div>
+        <input type="range" id="wid" min="70" max="420" step="5"></div>
+      <div class="ctl"><div class="row"><label>Body height</label><span class="val" id="hgtV"></span></div>
+        <input type="range" id="hgt" min="20" max="180" step="5"></div>
+      <div class="ctl"><div class="row"><label>Wheel size</label><span class="val" id="whlV"></span></div>
+        <input type="range" id="whl" min="40" max="180" step="2"></div>
+
+      <div class="grouplabel">Add-ons</div>
+      <div class="toggle"><label title="A spinning laser that maps the room — used for self-driving and mapping (SLAM)">Laser scanner (lidar)</label>
+        <span class="switch"><input type="checkbox" id="lidar" checked><span class="tr"></span></span></div>
+      <div class="toggle"><label>Front camera</label>
+        <span class="switch"><input type="checkbox" id="cam" checked><span class="tr"></span></span></div>
+      <div class="ctl" id="fovWrap"><div class="row"><label title="How wide the camera can see, in degrees (field of view)">Camera view angle</label><span class="val" id="fovV"></span></div>
+        <input type="range" id="fov" min="40" max="120" step="2"></div>
+      <div class="toggle"><label>Robot arm</label>
+        <span class="switch"><input type="checkbox" id="arm"><span class="tr"></span></span></div>
+      <div class="toggle"><label title="Keeps the heaviest part low and central so the robot is harder to tip over">Battery low &amp; centered</label>
+        <span class="switch"><input type="checkbox" id="batt" checked><span class="tr"></span></span></div>
+    </aside>
+
+    <div class="stage">
+      <canvas id="c"></canvas>
+      <div class="hint">drag to orbit &middot; scroll to zoom</div>
+    </div>
+
+    <aside class="readout">
+      <div class="grouplabel">Size on the ground</div>
+      <div class="stat"><span class="k">Length &times; Width</span><span class="v" id="oFoot"></span></div>
+      <div class="stat"><span class="k">Total height</span><span class="v" id="oHgt"></span></div>
+      <div class="stat"><span class="k" title="Distance between the left and right wheels — engineers call this the track">Wheel spacing</span><span class="v" id="oTrack"></span></div>
+      <div class="stat"><span class="k">Ground clearance</span><span class="v" id="oClr"></span></div>
+      <div class="grouplabel">Balance (estimate)</div>
+      <div class="stat"><span class="k" title="Center of gravity (CoG) — the lower it is, the more stable the robot">Balance-point height</span><span class="v" id="oCog"></span></div>
+      <div class="stat"><span class="k" title="How far it can lean before tipping over — bigger is safer">Lean before tipping</span><span class="v" id="oTip"></span></div>
+      <div class="grouplabel">What to watch</div>
+      <div class="checks" id="checks"></div>
+    </aside>
+  </div>
+</div>
+
+<dialog id="dlg">
+  <div class="dlg-h"><b>Robot file <span style="color:var(--muted);font-weight:400">(URDF)</span></b><button class="ghost" id="dlgClose">Close</button></div>
+  <div class="dlg-b">
+    <p>This is a <b>URDF</b> — the standard file that describes a robot's shape and joints. Save it into a ROS&nbsp;2 workspace and the <em>same file</em> drives the 3D simulators (Gazebo, RViz) and the Nav2 navigation stack, so your design carries straight into simulation. It's an approximate starting point — adjust the weights for your real parts.</p>
+    <textarea id="urdf" spellcheck="false" readonly></textarea>
+    <div style="display:flex; gap:8px; margin-top:12px">
+      <button class="cta" id="copy">Copy</button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+(() => {
+  "use strict";
+  const canvas = document.getElementById("c"), ctx = canvas.getContext("2d");
+  const S = { len:260, wid:170, hgt:70, whl:70, drive:"2wd", lidar:true, cam:true, fov:70, arm:false, batt:true };
+  const cam = { az:-0.9, el:0.5, dist:640, zoom:1 };
+
+  // ---- theme-aware colors read from CSS vars ----
+  let COL = {};
+  function readColors(){
+    const cs = getComputedStyle(document.documentElement);
+    const g = n => cs.getPropertyValue(n).trim();
+    COL = { ink:g("--ink"), muted:g("--muted"), accent:g("--accent"), robot:g("--robot"),
+            grid:g("--grid"), panel:g("--panel"), warn:g("--warn"), good:g("--good"), line:g("--line") };
+  }
+  readColors();
+  new MutationObserver(readColors).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+  matchMedia("(prefers-color-scheme:dark)").addEventListener("change", ()=>{readColors();draw();});
+
+  // ---- tiny 3D: robot frame is x-forward, y-left, z-up (REP-103), ground z=0 ----
+  function rot(p){ // az about z, then el about x
+    const ca=Math.cos(cam.az), sa=Math.sin(cam.az);
+    let x=p[0]*ca - p[1]*sa, y=p[0]*sa + p[1]*ca, z=p[2];
+    const ce=Math.cos(cam.el), se=Math.sin(cam.el);
+    let y2=y*ce - z*se, z2=y*se + z*ce;
+    return [x, y2, z2];
+  }
+  let W=0,H=0,cx=0,cy=0;
+  function project(p){
+    const r=rot(p), d=cam.dist/cam.zoom, f=520;
+    const s=f/(d - r[1]);           // perspective: camera looks along -y after rotation
+    return [cx + r[0]*s, cy - r[2]*s, d - r[1]];
+  }
+  function shade(hex, normal){
+    const L=[0.4,-0.6,0.75], nl=Math.hypot(...normal)||1;
+    let d=(normal[0]*L[0]+normal[1]*L[1]+normal[2]*L[2])/nl;
+    d=0.45+0.55*Math.max(0,d);
+    const m=hex.match(/\w\w/g).map(h=>parseInt(h,16));
+    return `rgb(${m.map(v=>Math.min(255,Math.round(v*d))).join(",")})`;
+  }
+  const faces=[];
+  function quad(a,b,c,d,color){
+    const u=[b[0]-a[0],b[1]-a[1],b[2]-a[2]], v=[d[0]-a[0],d[1]-a[1],d[2]-a[2]];
+    const n=[u[1]*v[2]-u[2]*v[1], u[2]*v[0]-u[0]*v[2], u[0]*v[1]-u[1]*v[0]];
+    faces.push({pts:[a,b,c,d], fill:shade(color,n)});
+  }
+  function box(cxx,cyy,czz,l,w,h,color){ // centered x,y ; z from czz to czz+h
+    const x0=cxx-l/2,x1=cxx+l/2,y0=cyy-w/2,y1=cyy+w/2,z0=czz,z1=czz+h;
+    const P=(x,y,z)=>[x,y,z];
+    quad(P(x0,y0,z1),P(x1,y0,z1),P(x1,y1,z1),P(x0,y1,z1),color); // top
+    quad(P(x0,y0,z0),P(x0,y1,z0),P(x1,y1,z0),P(x1,y0,z0),color); // bottom
+    quad(P(x1,y0,z0),P(x1,y1,z0),P(x1,y1,z1),P(x1,y0,z1),color); // front
+    quad(P(x0,y0,z0),P(x0,y0,z1),P(x0,y1,z1),P(x0,y1,z0),color); // back
+    quad(P(x0,y1,z0),P(x0,y1,z1),P(x1,y1,z1),P(x1,y1,z0),color); // left
+    quad(P(x0,y0,z0),P(x1,y0,z0),P(x1,y0,z1),P(x0,y0,z1),color); // right
+  }
+  function wheel(px,py,r,color){ // axis along y, center at (px,py,r)
+    const seg=16, tw=Math.min(22, r*0.5);
+    for(let i=0;i<seg;i++){
+      const a0=i/seg*2*Math.PI, a1=(i+1)/seg*2*Math.PI;
+      const z0=r+r*Math.sin(a0), x0=px+r*Math.cos(a0);
+      const z1=r+r*Math.sin(a1), x1=px+r*Math.cos(a1);
+      quad([x0,py-tw/2,z0],[x1,py-tw/2,z1],[x1,py+tw/2,z1],[x0,py+tw/2,z0],color);
+    }
+  }
+  function cyl(px,py,pz,r,h,color){ // axis along z
+    const seg=14;
+    for(let i=0;i<seg;i++){
+      const a0=i/seg*2*Math.PI, a1=(i+1)/seg*2*Math.PI;
+      const x0=px+r*Math.cos(a0), y0=py+r*Math.sin(a0);
+      const x1=px+r*Math.cos(a1), y1=py+r*Math.sin(a1);
+      quad([x0,y0,pz],[x1,y1,pz],[x1,y1,pz+h],[x0,y0,pz+h],color);
+    }
+    // top cap approx
+    quad([px-r,py-r,pz+h],[px+r,py-r,pz+h],[px+r,py+r,pz+h],[px-r,py+r,pz+h],color);
+  }
+  const lines=[]; // {a,b,color,w,dash}
+  function line(a,b,color,w,dash){ lines.push({a,b,color,w:w||1,dash:dash||null}); }
+
+  function geom(){
+    const wr=S.whl/2, deckZ=wr, L=S.len, Wd=S.wid;
+    // ground grid
+    const gspan=Math.max(L,Wd)*1.3, step=55;
+    for(let g=-gspan; g<=gspan; g+=step){
+      line([g,-gspan,0],[g,gspan,0], COL.grid, 1);
+      line([-gspan,g,0],[gspan,g,0], COL.grid, 1);
+    }
+    // chassis
+    box(0,0,deckZ, L, Wd, S.hgt, COL.robot);
+    // wheels
+    const wy=Wd/2 + Math.min(24,S.whl*0.4);
+    const trackCol = COL.ink==="#e6edf6" ? "#2b3644" : "#3a3a3a";
+    if(S.drive==="track"){
+      box(0,  wy, 0, L*0.96, 26, wr*2, trackCol);
+      box(0, -wy, 0, L*0.96, 26, wr*2, trackCol);
+    } else if(S.drive==="4wd"){
+      [L*0.34,-L*0.34].forEach(x=>{ wheel(x, wy, wr, "#2a2a2a"); wheel(x,-wy, wr, "#2a2a2a"); });
+    } else { // 2wd: rear drive axle + front caster
+      const rx=-L*0.32;
+      wheel(rx, wy, wr, "#2a2a2a"); wheel(rx,-wy, wr, "#2a2a2a");
+      cyl(L*0.36, 0, 0, wr*0.4, wr*0.4, "#555555");
+    }
+    const topZ = deckZ + S.hgt;
+    // battery (visual, low+centered vs high)
+    if(S.batt) box(0,0, deckZ+4, L*0.4, Wd*0.5, 26, "#3b7fb0");
+    else box(0,0, topZ, L*0.4, Wd*0.5, 30, "#b04a3b");
+    // lidar
+    if(S.lidar){ cyl(L*0.05,0, topZ, 26, 34, COL.ink==="#e6edf6"?"#20303c":"#20303c");
+      // scan disc
+      const sr=Math.max(L,Wd)*0.95, zc=topZ+18, seg=28;
+      for(let i=0;i<seg;i++){ const a=i/seg*2*Math.PI;
+        line([L*0.05,0,zc],[L*0.05+sr*Math.cos(a), sr*Math.sin(a), zc], COL.accent, 0.5, "scan");
+      }
+    }
+    // camera + FOV
+    if(S.cam){
+      const camX=L/2+8, camZ=deckZ+S.hgt*0.6;
+      box(camX-6,0,camZ-8, 16,34,16, "#111111");
+      const fr=Math.max(L,Wd)*1.6, half=S.fov*Math.PI/180/2;
+      const dirs=[[Math.cos(half),Math.sin(half)],[Math.cos(half),-Math.sin(half)]];
+      const vfr=fr*0.55;
+      dirs.forEach(d=>{
+        line([camX,0,camZ],[camX+fr*d[0], fr*d[1], camZ], COL.accent, 1);
+        line([camX,0,camZ],[camX+fr*d[0], fr*d[1], camZ-vfr*0.5], COL.accent, 0.5);
+        line([camX,0,camZ],[camX+fr*d[0], fr*d[1], camZ+vfr*0.5], COL.accent, 0.5);
+      });
+      line([camX+fr*Math.cos(half), fr*Math.sin(half), camZ],
+           [camX+fr*Math.cos(half),-fr*Math.sin(half), camZ], COL.accent, 0.7);
+    }
+    // arm
+    if(S.arm){
+      const bx=L*0.3, bz=topZ;
+      box(bx,0,bz, 30,30,20, "#8a8f98");           // base
+      box(bx,0,bz+20, 18,18,90, "#b6bcc6");         // link1 up
+      box(bx+55,0,bz+95, 110,16,16, "#b6bcc6");     // link2 fwd
+      box(bx+108,0,bz+95, 14,26,14, COL.accent);    // gripper
+    }
+    // CoG marker
+    const cog=estCoG();
+    const cz=cog.z;
+    line([-18,0,cz],[18,0,cz], COL.warn, 2);
+    line([0,-18,cz],[0,18,cz], COL.warn, 2);
+    line([0,0,cz-18],[0,0,cz+18], COL.warn, 2);
+  }
+
+  function estCoG(){
+    // crude mass model, returns CoG height above ground (mm)
+    const wr=S.whl/2, deckZ=wr;
+    let m=[], add=(mass,z)=>m.push([mass,z]);
+    add(S.len*S.wid*0.00006+0.5, deckZ+S.hgt/2);          // chassis+deck
+    add(0.4, wr*0.6);                                     // wheels/motors low
+    add(S.batt?0.6:0.6, S.batt?deckZ+15:deckZ+S.hgt+15);  // battery
+    if(S.lidar) add(0.2, deckZ+S.hgt+35);
+    if(S.cam) add(0.1, deckZ+S.hgt*0.6);
+    if(S.arm) add(0.8, deckZ+S.hgt+90);
+    const M=m.reduce((s,x)=>s+x[0],0), Z=m.reduce((s,x)=>s+x[0]*x[1],0)/M;
+    return {z:Z, mass:M};
+  }
+
+  function draw(){
+    faces.length=0; lines.length=0; geom();
+    ctx.clearRect(0,0,W,H);
+    // draw grid/scan/fov lines that belong BEHIND: we simply draw lines under faces for grid, over for overlays.
+    // Strategy: draw grid lines (z~0) first, then depth-sorted faces, then overlay lines (fov/scan/cog).
+    const groundLines = lines.filter(l=>l.color===COL.grid);
+    const overlay = lines.filter(l=>l.color!==COL.grid);
+    drawLines(groundLines);
+    faces.map(f=>({f, d:f.pts.reduce((s,p)=>s+project(p)[2],0)/4}))
+         .sort((a,b)=>b.d-a.d)
+         .forEach(({f})=>{
+            ctx.beginPath();
+            f.pts.forEach((p,i)=>{const s=project(p); i?ctx.lineTo(s[0],s[1]):ctx.moveTo(s[0],s[1]);});
+            ctx.closePath(); ctx.fillStyle=f.fill; ctx.fill();
+            ctx.strokeStyle="rgba(0,0,0,.16)"; ctx.lineWidth=1; ctx.stroke();
+         });
+    drawLines(overlay);
+    updateReadout();
+  }
+  function drawLines(arr){
+    arr.forEach(l=>{
+      const a=project(l.a), b=project(l.b);
+      ctx.beginPath(); ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]);
+      ctx.strokeStyle=l.color; ctx.lineWidth=l.w;
+      ctx.globalAlpha = l.dash==="scan" ? 0.22 : (l.color===COL.accent ? 0.55 : 0.9);
+      ctx.stroke(); ctx.globalAlpha=1;
+    });
+  }
+
+  // ---- readout + checks ----
+  const $=id=>document.getElementById(id);
+  function updateReadout(){
+    const wr=S.whl/2, cog=estCoG(), track=S.wid+Math.min(24,S.whl*0.4)*2;
+    const totalH = wr + S.hgt + (S.lidar?52:0) + (S.arm?110:0);
+    $("oFoot").textContent = `${S.len} × ${S.wid}`;
+    $("oHgt").textContent = `${Math.round(totalH)} mm`;
+    $("oTrack").textContent = `${Math.round(track)} mm`;
+    $("oClr").textContent = `${Math.round(wr*0.35)} mm`;
+    $("oCog").textContent = `${Math.round(cog.z)} mm`;
+    const tip = Math.atan2(track/2, cog.z)*180/Math.PI;
+    $("oTip").textContent = `${Math.round(tip)}°`;
+
+    const checks=[];
+    const camZ = wr + S.hgt*0.6, lidarBlocked = S.arm && camZ < wr+S.hgt+110;
+    if(S.cam && S.arm && (wr+S.hgt+90) > camZ+40)
+      checks.push(["warn","The arm rises into the camera's view — mount the camera higher or the arm off-center."]);
+    else if(S.cam) checks.push(["ok","Camera has a clear forward view."]);
+    if(tip < 32) checks.push(["warn",`Tip angle ${Math.round(tip)}° is low — this robot is tippy. Widen the track or lower the CoG (battery low & centered).`]);
+    else checks.push(["ok",`Stable stance (tip angle ${Math.round(tip)}°).`]);
+    if(!S.batt && (S.arm||S.lidar)) checks.push(["warn","Heavy items high with the battery up top raises the CoG — drop the battery low and centered."]);
+    if(S.lidar) checks.push(["ok","Lidar on top with a clear 360° scan plane."]);
+    if(S.whl < 65) checks.push(["warn","Small wheels struggle on carpet and thresholds — 65 mm+ indoors."]);
+    if(S.drive==="track") checks.push(["ok","Tracked drive: great off-road; expect poor odometry (tracks slip)."]);
+    $("checks").innerHTML = checks.map(c=>`<div class="check ${c[0]}"><span class="dot"></span><span>${c[1]}</span></div>`).join("");
+  }
+
+  // ---- URDF export ----
+  function urdf(){
+    const m=(v)=>(v/1000).toFixed(3), wr=S.whl/2;
+    const parts=[];
+    parts.push(`<?xml version="1.0"?>`);
+    parts.push(`<robot name="drafted_rover">`);
+    parts.push(`  <link name="base_link">`);
+    parts.push(`    <visual><geometry><box size="${m(S.len)} ${m(S.wid)} ${m(S.hgt)}"/></geometry>`);
+    parts.push(`      <origin xyz="0 0 ${m(wr+S.hgt/2)}"/><material name="body"><color rgba="1 0.48 0.16 1"/></material></visual>`);
+    parts.push(`    <collision><geometry><box size="${m(S.len)} ${m(S.wid)} ${m(S.hgt)}"/></geometry><origin xyz="0 0 ${m(wr+S.hgt/2)}"/></collision>`);
+    parts.push(`    <inertial><mass value="1.2"/><inertia ixx="0.02" iyy="0.02" izz="0.02" ixy="0" ixz="0" iyz="0"/></inertial>`);
+    parts.push(`  </link>`);
+    const wy=(S.wid/2+Math.min(24,S.whl*0.4))/1000;
+    const xs = [S.len*0.34, -S.len*0.34], rxm = -S.len*0.32;
+    const wheelDefs = S.drive==="track" ? [] :
+      (S.drive==="4wd" ? [["fl",xs[0],wy],["fr",xs[0],-wy],["rl",xs[1],wy],["rr",xs[1],-wy]]
+                       : [["l",rxm,wy],["r",rxm,-wy]]);
+    wheelDefs.forEach(([n,x,y])=>{
+      parts.push(`  <link name="wheel_${n}"><visual><geometry><cylinder radius="${m(S.whl/2)}" length="0.02"/></geometry>`);
+      parts.push(`    <origin rpy="1.5708 0 0"/><material name="tire"><color rgba="0.1 0.1 0.1 1"/></material></visual>`);
+      parts.push(`    <inertial><mass value="0.05"/><inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0"/></inertial></link>`);
+      parts.push(`  <joint name="joint_${n}" type="continuous"><parent link="base_link"/><child link="wheel_${n}"/>`);
+      parts.push(`    <origin xyz="${(x/1000).toFixed(3)} ${y.toFixed(3)} ${m(S.whl/2)}"/><axis xyz="0 1 0"/></joint>`);
+    });
+    if(S.lidar){
+      parts.push(`  <link name="lidar_link"><visual><geometry><cylinder radius="0.026" length="0.034"/></geometry></visual></link>`);
+      parts.push(`  <joint name="lidar_joint" type="fixed"><parent link="base_link"/><child link="lidar_link"/>`);
+      parts.push(`    <origin xyz="${m(S.len*0.05)} 0 ${m(wr+S.hgt+17)}"/></joint>`);
+    }
+    if(S.cam){
+      parts.push(`  <link name="camera_link"><visual><geometry><box size="0.016 0.034 0.016"/></geometry></visual></link>`);
+      parts.push(`  <joint name="camera_joint" type="fixed"><parent link="base_link"/><child link="camera_link"/>`);
+      parts.push(`    <origin xyz="${m(S.len/2+8)} 0 ${m(wr+S.hgt*0.6)}"/></joint>`);
+    }
+    parts.push(`</robot>`);
+    return parts.join("\n");
+  }
+
+  // ---- interaction ----
+  function resize(){
+    const r=canvas.getBoundingClientRect(), dpr=Math.min(2,devicePixelRatio||1);
+    W=r.width; H=r.height; canvas.width=W*dpr; canvas.height=H*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0); cx=W/2; cy=H*0.56; draw();
+  }
+  addEventListener("resize", resize);
+  let drag=null;
+  canvas.addEventListener("pointerdown",e=>{drag={x:e.clientX,y:e.clientY}; canvas.setPointerCapture(e.pointerId);});
+  canvas.addEventListener("pointermove",e=>{ if(!drag)return;
+    cam.az += (e.clientX-drag.x)*0.008; cam.el += (e.clientY-drag.y)*0.008;
+    cam.el=Math.max(-0.2,Math.min(1.45,cam.el)); drag={x:e.clientX,y:e.clientY}; draw(); });
+  addEventListener("pointerup",()=>drag=null);
+  canvas.addEventListener("wheel",e=>{e.preventDefault(); cam.zoom*=e.deltaY>0?0.93:1.07;
+    cam.zoom=Math.max(0.4,Math.min(2.6,cam.zoom)); draw();},{passive:false});
+
+  const VIEWS={ iso:{az:-0.9,el:0.5}, front:{az:0,el:0.12}, side:{az:-1.5708,el:0.12}, top:{az:0,el:1.42} };
+  document.getElementById("views").addEventListener("click",e=>{
+    const b=e.target.closest("button"); if(!b)return;
+    [...e.currentTarget.children].forEach(x=>x.classList.toggle("on",x===b));
+    Object.assign(cam,VIEWS[b.dataset.view]); cam.zoom=1; draw();
+  });
+  document.getElementById("reset").onclick=()=>{Object.assign(cam,{az:-0.9,el:0.5,zoom:1});
+    document.querySelectorAll("#views button").forEach(x=>x.classList.toggle("on",x.dataset.view==="iso")); draw();};
+
+  document.getElementById("drive").addEventListener("click",e=>{
+    const b=e.target.closest("button"); if(!b)return;
+    [...e.currentTarget.children].forEach(x=>x.classList.toggle("on",x===b));
+    S.drive=b.dataset.d; draw();
+  });
+  const bind=(id,key,fmt)=>{ const el=$(id), out=$(key+"V");
+    const set=()=>{ S[key]=+el.value; if(out) out.textContent=fmt(el.value); draw(); };
+    el.value=S[key]; if(out) out.textContent=fmt(el.value); el.addEventListener("input",set); };
+  bind("len","len",v=>v+" mm"); bind("wid","wid",v=>v+" mm"); bind("hgt","hgt",v=>v+" mm");
+  bind("whl","whl",v=>v+" mm"); bind("fov","fov",v=>v+"°");
+  ["lidar","cam","arm","batt"].forEach(k=>{ const el=$(k);
+    el.checked=S[k]; el.addEventListener("change",()=>{S[k]=el.checked;
+      if(k==="cam") $("fovWrap").style.display=el.checked?"block":"none"; draw();}); });
+  $("fovWrap").style.display=S.cam?"block":"none";
+
+  const dlg=$("dlg");
+  $("export").onclick=()=>{ $("urdf").value=urdf(); dlg.showModal(); };
+  $("dlgClose").onclick=()=>dlg.close();
+  $("copy").onclick=async()=>{ try{await navigator.clipboard.writeText($("urdf").value);
+    $("copy").textContent="Copied ✓"; setTimeout(()=>$("copy").textContent="Copy",1400);}catch(e){$("urdf").select();} };
+
+  resize();
+})();
+</script>

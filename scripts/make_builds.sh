@@ -15,7 +15,7 @@ knowledge() {  # $1 = target dir; copies the shared knowledge set
 }
 
 # Logical reading order for the consolidated single-file build.
-ORDER="parts-and-budgets hardware-requirements design-and-3d getting-started \
+ORDER="parts-and-budgets hardware-requirements setup-and-cloud design-and-3d getting-started \
 compute-platforms sensors ros ground-robots water-robots air-robots \
 manipulation-and-arms cnc-and-motion swarm-and-multi-robot control-and-stability \
 simulation-and-gyms docker-and-environments security ai-ml"

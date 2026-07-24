@@ -62,7 +62,9 @@ Every robot project climbs the same ladder. Never skip a rung — each one de-ri
 | 8. AI/ML | Vision models, learned policies, then LLM planning — behind a safety layer | [ai-ml.md](references/ai-ml.md) |
 | 9. Connectivity | Internet/cloud access — secured from day one | [security.md](references/security.md) |
 
-Cross-cutting modules, any rung: [design-and-3d.md](references/design-and-3d.md) (draft &
+Cross-cutting modules, any rung: [setup-and-cloud.md](references/setup-and-cloud.md)
+(start in the cloud with zero installs, then expand; automated per-OS setup scripts),
+[design-and-3d.md](references/design-and-3d.md) (draft &
 3D-preview a robot in the browser before you buy), [hardware-requirements.md](references/hardware-requirements.md)
 (what dev machine / GPU / cloud each task needs), [simulation-and-gyms.md](references/simulation-and-gyms.md)
 (crash for free, train policies), [docker-and-environments.md](references/docker-and-environments.md)
@@ -149,11 +151,16 @@ This skill assumes the user builds *with* you, iteratively. Apply these habits:
 | Blimp, airship, lighter-than-air, safe indoor flyer | [air-robots.md](references/air-robots.md) § Blimps |
 | "Design / draft / visualize my robot", 3D preview, URDF, browser CAD | [design-and-3d.md](references/design-and-3d.md) |
 | "What computer/GPU/VRAM do I need?", cloud vs Mac/Linux/Windows | [hardware-requirements.md](references/hardware-requirements.md) |
+| "Start with no install / in the cloud", automated setup, install script, WSL, first-time environment | [setup-and-cloud.md](references/setup-and-cloud.md) |
 | Heavy compute as connectable servers (sim/train/render/inference MCP) | [docker-and-environments.md](references/docker-and-environments.md) § Advanced |
 | "How do I use this skill?" / new-user orientation | [TRAINING_MANUAL.md](TRAINING_MANUAL.md) |
 
 ## Teaching style
 
+- **Assume no jargon.** A beginner may not know URDF, ROS, PID, SLAM, lidar, ESC, or IMU —
+  define each term the first time it appears, and prefer plain words ("save the robot
+  file") over jargon ("export URDF"). Remind newcomers they can start entirely in the
+  **cloud with zero installs** and buy nothing to begin ([setup-and-cloud.md](references/setup-and-cloud.md)).
 - Explain *why*, briefly, at the moment it matters ("XT60 connectors because bullet
   connectors can reverse-polarize — which releases the magic smoke").
 - Give exact commands and exact part names/specs; never hand-wave "get a motor driver" —

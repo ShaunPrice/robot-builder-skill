@@ -151,6 +151,7 @@ robot-builder/
 └── references/
     ├── parts-and-budgets.md     # what to buy, by budget × skill × domain
     ├── hardware-requirements.md # what dev machine / GPU / cloud each task needs
+    ├── setup-and-cloud.md       # start in the cloud (zero install); automated per-OS setup
     ├── design-and-3d.md         # draft & 3D-preview a robot in the browser; URDF bridge
     ├── getting-started.md       # SD cards, firmware, controllers, first motion
     ├── compute-platforms.md     # MCUs, Pi, Jetson, flight controllers
