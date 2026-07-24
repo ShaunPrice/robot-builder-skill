@@ -11,13 +11,14 @@
  *     and the SIGN of every axis before you ever fit props. PID gains below are
  *     starting points — expect to tune them.
  *
- * Board: any ESP32 / ESP32-C3/S3 (Arduino core). Set the 4 motor pins + I2C pins
- *        for your board. Flash one drone at a time and note its MAC (printed at
- *        boot) — the coordinator addresses each drone by MAC.
+ * Board: any ESP32 / ESP32-C3/S3 (Arduino core 3.x). Set the 4 motor pins + I2C
+ *        pins for your board. Flash one drone at a time and note its MAC (printed
+ *        at boot) — the coordinator addresses each drone by MAC.
  */
 #include <Wire.h>
 #include <WiFi.h>
 #include <esp_now.h>
+#include <math.h>
 
 // ---------------- board pins (EDIT for your board) ----------------
 static const int MOTOR_PIN[4] = {2, 3, 4, 5};   // M1 FR, M2 RR, M3 RL, M4 FL
@@ -30,7 +31,7 @@ static const int   PWM_MAX  = (1 << PWM_RES) - 1;
 static const float LOOP_HZ  = 500.0f;                    // control-loop rate
 static const uint32_t FAILSAFE_MS = 300;                 // disarm if no packet
 static const float MAX_TILT_DEG = 25.0f;                 // setpoint clamp
-static const float IDLE_THR = 0.06f;                     // spin-to-idle when armed
+static const float IDLE_THR = 0.06f;                     // motors OFF below this; also the arming floor
 
 // angle PID (pitch/roll): P on angle error, D on gyro rate. Yaw: P on rate.
 static float Kp_ang = 0.010f, Kd_ang = 0.0016f, Ki_ang = 0.0008f;
@@ -48,11 +49,13 @@ typedef struct __attribute__((packed)) {
 
 volatile Setpoint sp = {0, 0, 0, 0, 0};
 volatile uint32_t lastRxMs = 0;
+static portMUX_TYPE spMux = portMUX_INITIALIZER_UNLOCKED;   // guards sp + lastRxMs
 
 // ---------------- state ----------------
 float pitch = 0, roll = 0;            // deg (complementary filter)
 float gx_bias = 0, gy_bias = 0, gz_bias = 0;
 float iPitch = 0, iRoll = 0;
+bool  armReady = false;               // arming interlock: require a low-throttle packet first
 uint32_t lastLoopUs = 0;
 
 // ---------------- MPU-6050 ----------------
@@ -70,7 +73,11 @@ void mpuRead(float &ax, float &ay, float &az, float &gxr, float &gyr, float &gzr
   Wire.beginTransmission(MPU_ADDR); Wire.write(0x3B); Wire.endTransmission(false);
   Wire.requestFrom(MPU_ADDR, 14, true);
   int16_t r[7];
-  for (int i = 0; i < 7; i++) r[i] = (Wire.read() << 8) | Wire.read();
+  for (int i = 0; i < 7; i++) {          // read hi then lo explicitly — |-operands are unsequenced
+    uint8_t hi = Wire.read();
+    uint8_t lo = Wire.read();
+    r[i] = (int16_t)((hi << 8) | lo);
+  }
   ax = r[0] / 16384.0f; ay = r[1] / 16384.0f; az = r[2] / 16384.0f;   // g
   gxr = r[4] / 131.0f - gx_bias;                                       // deg/s
   gyr = r[5] / 131.0f - gy_bias;
@@ -87,7 +94,10 @@ void gyroCalibrate() {
 
 // ---------------- ESP-NOW ----------------
 void onRecv(const esp_now_recv_info_t *info, const uint8_t *data, int len) {
-  if (len == sizeof(Setpoint)) { memcpy((void *)&sp, data, sizeof(Setpoint)); lastRxMs = millis(); }
+  if (len != sizeof(Setpoint)) return;
+  portENTER_CRITICAL(&spMux);
+  memcpy((void *)&sp, data, sizeof(Setpoint)); lastRxMs = millis();
+  portEXIT_CRITICAL(&spMux);
 }
 
 // ---------------- motors ----------------
@@ -115,6 +125,15 @@ void loop() {
   if (dt < 1.0f / LOOP_HZ) return;
   lastLoopUs = now;
 
+  // atomic snapshot of the setpoint (written by the ESP-NOW task on the other core)
+  Setpoint s; uint32_t rxMs;
+  portENTER_CRITICAL(&spMux);
+  memcpy(&s, (const void *)&sp, sizeof s); rxMs = lastRxMs;
+  portEXIT_CRITICAL(&spMux);
+  // reject a torn / non-finite throttle and clamp to [0,1] before anything uses it
+  if (!isfinite(s.throttle)) s.throttle = 0.0f;
+  s.throttle = s.throttle < 0.0f ? 0.0f : (s.throttle > 1.0f ? 1.0f : s.throttle);
+
   float ax, ay, az, gxr, gyr, gzr; mpuRead(ax, ay, az, gxr, gyr, gzr);
   // accel angles (deg) and complementary filter
   float pitchAcc = atan2f(-ax, sqrtf(ay * ay + az * az)) * 57.2958f;
@@ -122,12 +141,15 @@ void loop() {
   pitch = 0.98f * (pitch + gyr * dt) + 0.02f * pitchAcc;
   roll  = 0.98f * (roll  + gxr * dt) + 0.02f * rollAcc;
 
-  bool armed = sp.armed && (millis() - lastRxMs < FAILSAFE_MS);   // link-loss failsafe
-  if (!armed || sp.throttle < IDLE_THR) { motorsOff(); iPitch = iRoll = 0; return; }
+  bool linkOk = (millis() - rxMs < FAILSAFE_MS);     // link-loss failsafe
+  if (s.throttle < IDLE_THR) armReady = true;         // only arm after a low-throttle packet
+  if (!s.armed || !linkOk) armReady = false;          // disarm / link loss resets the interlock
+  bool armed = s.armed && linkOk && armReady;
+  if (!armed || s.throttle < IDLE_THR) { motorsOff(); iPitch = iRoll = 0; return; }
 
   // setpoint clamp
-  float pSp = constrain(sp.pitch_sp, -MAX_TILT_DEG, MAX_TILT_DEG);
-  float rSp = constrain(sp.roll_sp,  -MAX_TILT_DEG, MAX_TILT_DEG);
+  float pSp = constrain(s.pitch_sp, -MAX_TILT_DEG, MAX_TILT_DEG);
+  float rSp = constrain(s.roll_sp,  -MAX_TILT_DEG, MAX_TILT_DEG);
 
   // angle PID -> axis commands
   float ePitch = pSp - pitch, eRoll = rSp - roll;
@@ -135,10 +157,10 @@ void loop() {
   iRoll  = constrain(iRoll  + eRoll  * dt, -I_LIMIT / Ki_ang, I_LIMIT / Ki_ang);
   float pitchCmd = Kp_ang * ePitch + Ki_ang * iPitch - Kd_ang * gyr;
   float rollCmd  = Kp_ang * eRoll  + Ki_ang * iRoll  - Kd_ang * gxr;
-  float yawCmd   = Kp_yaw * (sp.yaw_rate_sp - gzr);
+  float yawCmd   = Kp_yaw * (s.yaw_rate_sp - gzr);
 
   // X-mix (verify signs & motor order with props OFF)
-  float thr = sp.throttle;
+  float thr = s.throttle;
   writeMotor(0, thr - pitchCmd + rollCmd - yawCmd);   // M1 front-right
   writeMotor(1, thr + pitchCmd + rollCmd + yawCmd);   // M2 rear-right
   writeMotor(2, thr + pitchCmd - rollCmd - yawCmd);   // M3 rear-left

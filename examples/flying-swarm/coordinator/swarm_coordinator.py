@@ -51,7 +51,8 @@ def leader_target(t):
         a = (t - 12) * 0.5; c = np.array([11.0, 0, 6.0])
         return c + np.array([3 * math.cos(a), 3 * math.sin(a), 0.6 * math.sin(2 * a)]), "ring", 1.0
     if t < 40: return np.array([11.0 * (1 - (t - 30) / 10), 0, 6.0]), "v", 1.0
-    return np.array([0, 0, max(0.0, 6.0 - 1.4 * (t - 40))]), "v", 0.0
+    z = max(0.0, 6.0 - 1.4 * (t - 40))                 # stay ARMED through the descent;
+    return np.array([0, 0, z]), "v", (1.0 if z > 0.05 else 0.0)   # disarm only on the ground
 
 def formation_goals(t, n, base_layer):
     lpos, form, armed = leader_target(t)
@@ -71,7 +72,7 @@ class Model:
     def step(self, acc, dt):
         acc = acc.copy(); acc[:, 2] -= 0.0
         self.vel += acc * dt
-        vn = np.linalg.norm(self.vel, axis=1, keepdims=True)
+        vn = np.maximum(np.linalg.norm(self.vel, axis=1, keepdims=True), 1e-9)  # avoid 0/0
         self.vel = np.where(vn > MAX_V, self.vel / vn * MAX_V, self.vel)
         self.pos += self.vel * dt
         self.pos[:, 2] = np.maximum(self.pos[:, 2], 0.0)
@@ -113,30 +114,39 @@ def main():
     dt = 1.0 / CTRL_HZ
     t = 0.0
     print(f"# coordinator: {n} drones, {'DRY-RUN model' if a.dry_run else a.port}, {CTRL_HZ:.0f} Hz")
-    while t <= a.duration:
-        goals, armed = formation_goals(t, n, base_layer)
-        acc = np.zeros((n, 3))
-        for i in range(n):
-            pos, vel = model.state(i)                   # <-- HARDWARE: real localization here
-            thr, pitch, roll = setpoint(goals[i], pos, vel)
-            line = f"{i},{int(armed)},{thr:.3f},{pitch:.2f},{roll:.2f},0.00"
-            if ser: ser.write((line + "\n").encode())
-            if a.dry_run and abs(t - round(t)) < dt / 2 and i == 0:
-                print(f"t={t:4.1f}s d0 -> thr={thr:.2f} pitch={pitch:+5.1f} roll={roll:+5.1f}  "
-                      f"pos=({pos[0]:+.1f},{pos[1]:+.1f},{pos[2]:.1f}) goal_z={goals[i][2]:.1f}")
-            # advance the dry-run model with the same formation controller as the sim
-            d = pos - model.pos; dist = np.linalg.norm(d, axis=1)
-            acc[i] += SLOT_GAIN * (goals[i] - pos) - DAMP * vel
-            for j in range(n):
-                if j != i and 1e-3 < dist[j] < SEP_R:
-                    acc[i] += SEP_GAIN * (d[j] / dist[j]) * (SEP_R - dist[j]) / SEP_R
-        if a.dry_run:
-            model.step(acc, dt)
-        time.sleep(0 if a.dry_run else dt)
-        t += dt
-    if ser:
-        for i in range(n): ser.write(f"{i},0,0,0,0,0\n".encode())   # disarm all
-        ser.close()
+    try:
+        # arming preamble: hold armed + idle throttle ~1.5 s so each drone latches its
+        # arm interlock (drone.ino arms only after seeing a low-throttle packet) before takeoff.
+        ta = 0.0
+        while ta < 1.5:
+            for i in range(n):
+                if ser: ser.write(f"{i},1,0.000,0.00,0.00,0.00\n".encode())
+            time.sleep(0 if a.dry_run else dt); ta += dt
+        while t <= a.duration:
+            goals, armed = formation_goals(t, n, base_layer)
+            acc = np.zeros((n, 3))
+            for i in range(n):
+                pos, vel = model.state(i)               # <-- HARDWARE: real localization here
+                thr, pitch, roll = setpoint(goals[i], pos, vel)
+                line = f"{i},{int(armed)},{thr:.3f},{pitch:.2f},{roll:.2f},0.00"
+                if ser: ser.write((line + "\n").encode())
+                if a.dry_run and abs(t - round(t)) < dt / 2 and i == 0:
+                    print(f"t={t:4.1f}s d0 -> thr={thr:.2f} pitch={pitch:+5.1f} roll={roll:+5.1f}  "
+                          f"pos=({pos[0]:+.1f},{pos[1]:+.1f},{pos[2]:.1f}) goal_z={goals[i][2]:.1f}")
+                # advance the dry-run model with the same formation controller as the sim
+                d = pos - model.pos; dist = np.linalg.norm(d, axis=1)
+                acc[i] += SLOT_GAIN * (goals[i] - pos) - DAMP * vel
+                for j in range(n):
+                    if j != i and 1e-3 < dist[j] < SEP_R:
+                        acc[i] += SEP_GAIN * (d[j] / dist[j]) * (SEP_R - dist[j]) / SEP_R
+            if a.dry_run:
+                model.step(acc, dt)
+            time.sleep(0 if a.dry_run else dt)
+            t += dt
+    finally:
+        if ser:                                          # always disarm + close, incl. Ctrl-C
+            for i in range(n): ser.write(f"{i},0,0,0,0,0\n".encode())
+            ser.close()
     print("# done")
 
 

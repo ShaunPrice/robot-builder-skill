@@ -44,11 +44,16 @@ void setup() {
 }
 
 void handleLine(char *s) {
-  int id; Setpoint sp;
-  int n = sscanf(s, "%d,%hhu,%f,%f,%f,%f",
-                 &id, &sp.armed, &sp.throttle, &sp.pitch_sp, &sp.roll_sp, &sp.yaw_rate_sp);
-  if (n == 6 && id >= 0 && id < N_DRONES)
+  // Parse into ALIGNED locals — taking &member of a packed struct for sscanf is
+  // an unaligned store (Xtensa LoadStoreAlignment risk). Member writes are byte-wise & safe.
+  int id, armed; float thr, p, r, y;
+  int n = sscanf(s, "%d,%d,%f,%f,%f,%f", &id, &armed, &thr, &p, &r, &y);
+  if (n == 6 && id >= 0 && id < N_DRONES) {
+    Setpoint sp;
+    sp.armed = (uint8_t)armed; sp.throttle = thr;
+    sp.pitch_sp = p; sp.roll_sp = r; sp.yaw_rate_sp = y;
     esp_now_send(DRONE_MAC[id], (uint8_t *)&sp, sizeof(sp));
+  }
 }
 
 void loop() {
