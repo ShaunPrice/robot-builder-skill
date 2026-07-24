@@ -31,7 +31,7 @@ to be wrong. Climb only as far as your project needs.
 
 | Rung | What you do | Cheapest way to do it | Cost |
 |---|---|---|---|
-| **1. Explore free** | Learn ROS 2 (the software that runs most robots) and talk to the mentor | Free browser VS Code (GitHub Codespaces / Gitpod); a free Claude, ChatGPT, or Gemini chat, or a no-subscription Poe / Mistral Le Chat bot | **$0** |
+| **1. Explore free** | Learn ROS 2 (the software that runs most robots) and talk to the mentor | Free browser VS Code (GitHub Codespaces / Gitpod); a free Claude, ChatGPT, or Gemini chat | **$0** |
 | **2. Design** | Draw your robot in 3D before buying a single part | The bundled browser Robot Drafter — nothing to install | **$0** |
 | **3. Simulate** | Drive, fly, and safely crash it; train a first vision model | Gazebo / ArduPilot SITL (flight simulator, no aircraft) in that same free Codespace; a free Google Colab GPU to train | **$0** |
 | **4. First hardware** | Your first real robot you can drive and then program | A coding-optional kit or RC car (no soldering), then a Raspberry Pi / ESP32 rover with a camera | **< $100 → $300** |
@@ -105,22 +105,6 @@ adapters and per-platform install guides live in [builds/](builds/):
 | **Gemini** — [builds/gemini](builds/gemini/) | Gem instructions + knowledge; `GEMINI.md` for Gemini CLI | ✅ Gem tested (10-file knowledge cap — see install guide) |
 | **Hermes** (local Docker LLMs) — [builds/hermes](builds/hermes/) | native skill folder (Claude format) or system prompt + knowledge | ✅ tested with local Gemma4-4B |
 | **OpenClaw** — [builds/openclaw](builds/openclaw/) | `openclaw skills install` (Claude-compatible folder) | ✅ install/discovery verified |
-
-### Low-cost / free option
-
-No Claude / ChatGPT / Gemini subscription? Host the mentor on **[Poe](https://poe.com)** — free to
-build, with real retrieval over the knowledge file and a shareable bot link a learner can just click:
-
-1. Sign up free at [poe.com](https://poe.com) (email / Google / Apple — no card).
-2. **Create bot** and pick an economical base model (a mid-tier Claude, GPT, or Gemini) to stretch the free daily points.
-3. Paste the persona from [`builds/openai/gpt-instructions.md`](builds/openai/gpt-instructions.md) into the **Prompt** field — if Poe truncates it, keep the core; the detail lives in the knowledge file.
-4. Grab the one-file knowledge base `robot-builder-complete.md` (in the Gemini build's `knowledge-gem/`, or run `scripts/make_builds.sh`). Poe rejects `.md`, so copy it first: `cp robot-builder-complete.md robot-builder-complete.txt`
-5. Under **Knowledge Base**, upload the `.txt` (optionally enable **Cite sources**).
-6. **Create**, ask a beginner question to confirm it quotes the file, then share your `poe.com/YourBot` link.
-
-Free daily points cover light Q&A; heavy use wants Poe's ~$5/mo plan. **Prefer $0 with no metering?**
-**[Mistral Le Chat](https://chat.mistral.ai)** is free (no card), uploads `robot-builder-complete.md`
-natively as a RAG "Library", and is capped at ~25 messages/day.
 
 ## What's inside
 
