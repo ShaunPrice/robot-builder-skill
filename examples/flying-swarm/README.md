@@ -3,7 +3,7 @@
 A 3–5 unit swarm of low-cost **ESP32 micro-quadcopters**, designed and *simulated*
 end-to-end with the Robot Builder skill before any hardware is bought.
 
-📺 **Video walkthrough:** *(add your YouTube link here)*
+📺 **Video walkthrough:** https://youtu.be/pwm5aJ_eKuI
 
 > ⚠️ **Simulation only — not yet flown.** Everything here has been developed and proven in
 > **simulation**; it has **not** been built or flight-tested on real hardware. It's a
