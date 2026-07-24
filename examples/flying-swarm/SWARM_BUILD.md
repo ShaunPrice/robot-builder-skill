@@ -6,6 +6,13 @@ A 3–5 unit swarm of tiny ESP32 quadcopters you can **simulate first, then buil
 price of one shop-bought drone.** Every coordination behaviour is proven in a physics simulator
 before a single motor is bought — the skill's rule for anything that flies.
 
+> ⚠️ **Status & disclosure.** This design has been **fully developed and proven in simulation, but
+> has *not* been built or flight-tested on real hardware.** Treat it as a software-tested blueprint —
+> a head start, not a guarantee. If you build it, do so at your own risk: props off on the bench,
+> LiPos in a fire bag, fly netted, and follow your local drone rules.
+> **Nothing here is sponsored, and the author has no affiliation with any vendor mentioned** — they're
+> simply where the parts happen to be. Prices are approximate; always check current pricing.
+
 ---
 
 ## 1. What we're building — and why this platform

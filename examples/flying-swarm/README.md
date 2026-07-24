@@ -5,6 +5,11 @@ end-to-end with the Robot Builder skill before any hardware is bought.
 
 📺 **Video walkthrough:** *(add your YouTube link here)*
 
+> ⚠️ **Simulation only — not yet flown.** Everything here has been developed and proven in
+> **simulation**; it has **not** been built or flight-tested on real hardware. It's a
+> software-tested blueprint, not a guarantee — build and fly at your own risk. **Not sponsored;
+> no affiliation with any vendor mentioned.**
+
 ## What's here
 
 | File | What it is |
