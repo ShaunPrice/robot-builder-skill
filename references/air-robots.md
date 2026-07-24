@@ -122,3 +122,51 @@ computer as primary, DIY as logger until proven).
   e.g. amateur license for some bands/powers in AU/US) — check before transmitting.
 - Always read the logs after every flight (Mission Planner/QGC log viewer, Betaflight
   blackbox). The log explains the crash; guessing doesn't.
+
+## Blimps and lighter-than-air (the safe way to learn flight)
+
+Everything above says air is unforgiving. Blimps are the honest exception. An indoor
+airship floats whether or not your code works, drifts at walking pace, weighs less than a
+paperback, and bumps a wall instead of shattering against it. That makes it the single
+safest aerial platform and a genuinely good **first** flying robot — a place to learn
+station-keeping and closed-loop thrust control where a bug means a slow drift into the
+sofa, not a prop in your hand or a $400 quad in a tree.
+
+**Lift gas — one hard rule: helium only, never hydrogen.** Helium is inert and safe; it is
+also expensive and leaks through thin Mylar over days, so treat the envelope as a
+consumable and expect to top up. Hydrogen lifts slightly better and is far cheaper, and
+none of that matters: it is flammable and forms explosive mixtures with air. A hydrogen
+airship indoors, near LiPos and soldering irons, is a fire waiting for an ignition source.
+Do not build one, and decline to help anyone who asks — reframe to helium every time. This
+is a safety line, not a preference (see the LiPo and fire discipline in SKILL.md).
+
+**The physics is all in one number.** Helium's net lift at sea level is only about **1 gram
+per litre** of envelope (helium displaces ~1.2 g of air per litre but weighs ~0.18 g
+itself). A 50 cm foil "party" balloon is maybe 15–20 L — a few grams of payload. To carry a
+~40 g gondola you need on the order of 40–60 L of envelope. So the design rule is backwards
+from a drone: weigh your payload first, then size the envelope to float it, then shave grams
+everywhere. The whole game is trimming to **just-under-neutral buoyancy** — a hair heavy, so
+it sinks gently when thrust cuts — using tiny ballast (coins, tape, a length of wire).
+
+**Build (~$50–150 DIY).** Mylar/foil envelope (party foil, or a proper heat-sealed film
+kit) + a featherweight gondola (foam, balsa, or 3D-printed at low infill) + a few tiny
+brushed pager motors with light foam props. The usual layout is two horizontal props for
+differential yaw/thrust plus one vertical prop for up/down, driven from an ESP32 or a
+sub-5 g brushed flight controller and a 1S 150–300 mAh LiPo. No autopilot, GPS, or IMU is
+required to start — brushed-motor thrust control is the entire electronics stack.
+Commercial indoor-blimp kits exist if scratch-building the envelope is the blocker.
+
+**Why it's the ideal control-theory sandbox.** The dynamics are so slow that the loop is
+forgiving — you can run station-keeping at 20 Hz and still feel over-damped. It is the
+gentlest possible place to first meet a PID loop: hold an altitude with the vertical prop,
+watch the integral term fight residual buoyancy, learn what Kd actually does, all at
+one-tenth of a metre per second (see control-and-stability.md). Bonus: indoor blimp
+**swarms** are a research favourite precisely because the platform is so safe to fly many of
+at once (see swarm-and-multi-robot.md), and flying indoors sidesteps the entire drone
+regulatory burden — no registration, no Remote ID, no altitude limits (the rules earlier in
+this file are for the outdoor multirotor world, not your living room).
+
+**Honest take.** It is slow, payload is measured in grams, and helium is a recurring cost
+that quietly leaks away. You will not do aerial photography or outdoor missions with it. But
+as the lowest-risk way to feel flight control work before you commit to a multirotor, a
+blimp earns its place — prove the loop where the worst outcome is a soft bump.

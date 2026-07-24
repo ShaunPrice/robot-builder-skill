@@ -143,3 +143,48 @@ LQR (optimal gains for linear systems — the balancing robot's "pro mode"), MPC
 constraint-aware — how bigger drones and rovers plan), and learned policies (RL — see
 simulation-and-gyms.md). Teach these only when a tuned PID visibly hits its ceiling;
 for 90% of hobby robots, cascaded PID + feedforward is the ceiling.
+
+## Hexapods (six-legged robots)
+
+The best-kept secret in legged robotics: a hexapod is **statically stable**, so it is the
+one legged form a beginner can actually learn on without the fall-over frustration. Split
+the six legs into two tripods (legs 1-3-5 and 2-4-6); at least one tripod is always planted,
+and three ground contacts define a support triangle. Keep the center of mass inside that
+triangle and the robot cannot topple — it can freeze mid-gait, hold a pose, or lose a leg
+mid-step and stay upright. That means you get to learn gaits and per-leg inverse kinematics
+*in isolation*, without also fighting dynamic balance the way a biped forces you to (see the
+difficulty ladder above — hexapods sit a rung to the side of it, not further up it).
+
+- **Anatomy**: the classic build is **18 servos — 3 DOF per leg × 6 legs**. Per leg the
+  joints are coxa (hip yaw, swings the leg forward/back), femur (lift), and tibia (extend).
+  Each leg is therefore a small 3-DOF arm, and you solve **per-leg inverse kinematics** to
+  place each foot at a commanded (x, y, z): coxa angle from `atan2(y, x)`, then a planar
+  2-link solve for femur/tibia. This is the same math as a tabletop arm — cross-reference
+  manipulation-and-arms.md and reuse it six times.
+- **Gaits** (the fun part, and pure kinematics — no balance controller needed):
+  - *Tripod* — alternate the two tripods; three legs swing while three support. Fast,
+    always statically stable, the one to code first.
+  - *Ripple* and *wave* — move one (ripple: overlapping) or one-at-a-time (wave) leg, five
+    on the ground at all times. Slow and maximally stable, good for rough ground or heavy
+    payloads. A gait is just a phase table: per leg, when to lift and where to plant.
+- **Kits and cost tiers**:
+  - **Freenove Hexapod** (~$100-150, 18× MG90/MG996-class servos, ESP32 or Pi) — the honest
+    beginner entry; you will fight the servos, but the price is right.
+  - **Hiwonder SpiderPi** (~$400-600, bus servos + Pi + camera) — mid-tier with vision.
+  - **Trossen PhantomX MK-III** (~$1,000+, Dynamixel AX/MX serial servos) — the "it just
+    works" tier: contactable torque, feedback, and a clean ROS story.
+- **The real challenge is power and wiring, not the gait.** Eighteen servos stalling
+  together pull tens of amps in spikes. **Do not run servo power off the Pi's 5V rail** —
+  that is how you brown out and reboot mid-step (see the power-architecture note in
+  ground-robots.md). Use a dedicated servo **BEC/UBEC** sized for the stall case (a 5-6V
+  6-10A UBEC minimum; the big kits want more), a fat common-ground star, and bulk
+  capacitance across the rail. Drive the servos through a **PCA9685** 16-channel PWM board
+  (you need two for 18 channels) or, better, a **serial-servo bus** (Dynamixel, Hiwonder,
+  Feetech) so one data line addresses every joint and you get position feedback for free.
+  Budget for the current spikes up front — undersizing the BEC is the number-one hexapod
+  build failure.
+- **Honest take**: a hexapod is the form to *learn* legged locomotion on — gaits, IK, and
+  servo power management, all without the tuning agony of dynamic balance. It is genuinely
+  beginner-friendly in a way nothing else on legs is. Once it walks, the quadruped and then
+  the biped are the harder, dynamic-balance rungs (covered above) — and that is where the
+  "prove it before it can hurt you" discipline and RL-in-simulation path start to matter.

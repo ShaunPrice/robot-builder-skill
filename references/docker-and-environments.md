@@ -104,3 +104,57 @@ Pin tags (never bare `latest` for robot deployments), keep Dockerfiles + compose
 robot repo, `docker system prune` periodically on small SSDs, don't bake secrets into
 images (mount env files — security.md), and remember containers share the host kernel:
 container ≠ sandbox for untrusted code.
+
+## Advanced capabilities as connectable Docker-MCP servers
+
+The MCP Toolkit section above connects Claude to Docker so it can build and run containers.
+The next step up: package the *heavy* robot-building capabilities as their own containers
+that each expose an MCP server, and connect Claude to those. Now the container isn't just
+something Claude launches — it's a tool Claude drives conversationally. The heavy compute
+runs wherever you put it (your desk, a GPU box in the cupboard, a cloud host) while the
+chat stays light.
+
+### Tiered compute: what stays in chat, what becomes a server
+
+Light work stays where it already is — parts advice, writing nodes, and browser-based 3D
+drafting (see design-and-3d.md) live in chat and artifacts, no container needed. The heavy
+work is what earns a dedicated server:
+
+| Capability | Server it becomes | Where it wants to run |
+|---|---|---|
+| Physics sim (Gazebo, Isaac) | a sim MCP behind SITL/Gazebo/Isaac | GPU box for Isaac; any Linux for Gazebo |
+| Full ROS 2 stack | a ROS 2 container exposing build/launch/topic tools | dev machine or the robot's own compute |
+| Training (YOLO fine-tune, RL) | an ML-training MCP on a CUDA box | RTX box you own, or a rented cloud GPU |
+| Local inference (LLM/VLA) | an Ollama or vLLM MCP | 16 GB+ VRAM box (see hardware-requirements.md) |
+| Rendering / synthetic data | a Blender or ComfyUI render MCP | any GPU box |
+| URDF/mesh processing | a meshing/URDF MCP | modest CPU box |
+
+Each is a container Claude calls as a tool: "fine-tune YOLO on this dataset", "start SITL
+and connect my mission script", "render 500 synthetic frames of the gripper".
+
+### Local, remote, or cloud — same connection, only the host changes
+
+The MCP connection is identical whether the container runs on your laptop, on a remote GPU
+machine you own, or on a cloud GPU host. For a remote box, reach it over Tailscale or an
+SSH tunnel rather than opening a port (see security.md) — the MCP client talks to the
+server over that private link. Concrete shapes people actually run: a ComfyUI/render MCP on
+the workstation with the big card; a Gazebo-SITL container behind MCP for headless flight
+tests; dusty-nv `jetson-containers` running an inference server *on the robot itself*;
+Ollama or vLLM as an inference MCP so a planning node calls a local model instead of a paid
+API. Match each server to a box that can actually run it — hardware-requirements.md says
+which is which.
+
+### Security — reiterate, because the surface is bigger than a shell
+
+Everything from the MCP Toolkit cautions still holds, and the stakes go up: the Docker
+socket is root-equivalent, and an MCP *server* additionally has network reach and its own
+tool surface. So: connect only to **your own** machines; before connecting any server,
+read what tools and paths it actually exposes; scope credentials tightly (a render server
+does not need your cloud keys); and never point a session at the *robot's* own Docker
+unless you would hand that session root on the robot — because that is exactly what it is.
+Treat a server someone else hosts the way you'd treat any untrusted binary reaching into
+your network (see security.md).
+
+The payoff: the skill scales past the chat window. Claude can build images, launch sims,
+kick off training runs, and render synthetic data by connecting to these servers — while
+you keep firm control of *where* the compute lives and what each server is allowed to touch.

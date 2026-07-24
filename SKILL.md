@@ -1,18 +1,18 @@
 ---
 name: robot-builder
 description: >
-  End-to-end mentor for designing, buying, building, programming, simulating, and securing
-  hobby robots — ground rovers, boats/ROVs, and aircraft (drones, fixed wing, helicopters,
-  hobby-legal rockets). Covers parts selection by budget and skill level, SD-card imaging,
-  RC and gamepad controllers, Raspberry Pi and NVIDIA Jetson, depth sensors and lidar,
-  ROS 2, autopilots (ArduPilot/PX4/Betaflight), PID control, self-balancing and legged
-  robots, flight stability, simulators and RL training gyms (Gazebo, SITL, MuJoCo, Isaac
-  Lab, Gymnasium), Docker environments, internet/cloud security, and safe AI/ML on robots
-  (vision, LLM planning). Use whenever the user wants to build, buy parts for, wire,
-  flash, simulate, tune, debug, or add AI to any robot, drone, rover, boat, balancing or
-  walking robot, or rocket — or mentions Jetson, RealSense, lidar, ROS, PID tuning,
-  Gazebo, ESCs, or LiPo batteries — even if they never say "robot" ("make my drone follow
-  me", "make it balance").
+  End-to-end mentor for designing, building, programming, simulating, and securing hobby
+  robots — ground rovers, boats/ROVs, aircraft (drones, planes, helis, blimps, hobby-legal
+  rockets), robotic arms, CNC/gantry machines, hexapods and legged robots, and multi-robot
+  swarms. Covers parts by budget and skill, host-hardware/GPU guidance, 3D design, SD-card
+  imaging, Raspberry Pi and Jetson, sensors and lidar, ROS 2 and MoveIt, autopilots
+  (ArduPilot/PX4/Betaflight), CNC firmware (GRBL/FluidNC), PID control, kinematics and
+  grasping, simulators and RL gyms (Gazebo, SITL, Isaac Lab), Docker/MCP compute servers,
+  security, and safe AI/ML (vision, imitation/VLA, LLM planning). Use whenever someone
+  wants to build, buy parts for, wire, flash, simulate, tune, debug, design, or add AI to
+  any robot, drone, rover, boat, arm, CNC machine, swarm, walking or balancing robot, or
+  rocket — or mentions Jetson, lidar, ROS, MoveIt, GRBL, steppers, PID tuning, ESCs, LiPo,
+  or what GPU/hardware they need — even if they never say "robot".
 ---
 
 # Robot Builder — vibe-code a robot from zero to autonomous
@@ -33,8 +33,11 @@ Ask (conversationally, not as a form) and remember for the whole session:
    - *Beginner*: never soldered, little/no coding, no Linux.
    - *Intermediate*: can solder, comfortable with Python and a terminal.
    - *Advanced*: comfortable with Linux, electronics, maybe ROS/embedded already.
-3. **Domain** — ground, water (surface or submersible), or air (multirotor, fixed wing,
-   helicopter, rocket). If unsure, steer beginners to **ground** — it fails gently.
+3. **Domain** — ground, water (surface or submersible), air (multirotor, fixed wing,
+   helicopter, blimp, rocket), a robot arm/manipulator, a CNC/gantry machine, legged
+   (hexapod → quadruped → biped), or a multi-robot swarm. If unsure, steer beginners to
+   **ground** (it fails gently); a **hexapod** is the gentlest first *legged* robot and a
+   **blimp** the safest first *flying* one.
 4. **Goal** — drive it around? Autonomy? Camera/AI? Competition? Learning ROS? A specific
    mission ("inspect my roof", "map my house")?
 5. **Country** — matters for aircraft/rocket law, plug/charger standards, and part vendors.
@@ -59,14 +62,19 @@ Every robot project climbs the same ladder. Never skip a rung — each one de-ri
 | 8. AI/ML | Vision models, learned policies, then LLM planning — behind a safety layer | [ai-ml.md](references/ai-ml.md) |
 | 9. Connectivity | Internet/cloud access — secured from day one | [security.md](references/security.md) |
 
-Cross-cutting modules, any rung: [simulation-and-gyms.md](references/simulation-and-gyms.md)
+Cross-cutting modules, any rung: [design-and-3d.md](references/design-and-3d.md) (draft &
+3D-preview a robot in the browser before you buy), [hardware-requirements.md](references/hardware-requirements.md)
+(what dev machine / GPU / cloud each task needs), [simulation-and-gyms.md](references/simulation-and-gyms.md)
 (crash for free, train policies), [docker-and-environments.md](references/docker-and-environments.md)
-(reproducible ROS/sim/Jetson stacks — and connecting Claude to Docker via MCP),
-[control-and-stability.md](references/control-and-stability.md) (self-balancing, legged
-robots, flight stability, rocket stability).
+(reproducible ROS/sim/Jetson stacks, Docker-MCP, and serving heavy compute as connectable
+servers), [control-and-stability.md](references/control-and-stability.md) (PID, self-balancing,
+hexapods/legged robots, flight & rocket stability).
 
 Domain files: [ground-robots.md](references/ground-robots.md),
-[water-robots.md](references/water-robots.md), [air-robots.md](references/air-robots.md).
+[water-robots.md](references/water-robots.md), [air-robots.md](references/air-robots.md)
+(incl. blimps), [manipulation-and-arms.md](references/manipulation-and-arms.md) (arms),
+[cnc-and-motion.md](references/cnc-and-motion.md) (CNC/gantry),
+[swarm-and-multi-robot.md](references/swarm-and-multi-robot.md) (swarms).
 
 Read only the reference files relevant to the user's current rung and domain — don't load
 everything at once.
@@ -134,6 +142,14 @@ This skill assumes the user builds *with* you, iteratively. Apply these habits:
 | PID, tuning, filters, "it oscillates", self-balancing, biped/quadruped, flight/rocket stability, CG | [control-and-stability.md](references/control-and-stability.md) |
 | Docker, containers, "ROS on my Mac/Windows", Jetson containers, Docker MCP | [docker-and-environments.md](references/docker-and-environments.md) |
 | YOLO, object detection, "make it see", LLM control, VLA | [ai-ml.md](references/ai-ml.md) |
+| Robot arm, gripper, manipulator, MoveIt, kinematics, grasping, pick-and-place | [manipulation-and-arms.md](references/manipulation-and-arms.md) |
+| CNC, router, laser engraver, plotter, GRBL, FluidNC, steppers, G-code | [cnc-and-motion.md](references/cnc-and-motion.md) |
+| Swarm, multi-robot, fleet, formation, many robots cooperating | [swarm-and-multi-robot.md](references/swarm-and-multi-robot.md) |
+| Hexapod / six-legged, quadruped, biped, walking gait | [control-and-stability.md](references/control-and-stability.md) § Legged/Hexapods |
+| Blimp, airship, lighter-than-air, safe indoor flyer | [air-robots.md](references/air-robots.md) § Blimps |
+| "Design / draft / visualize my robot", 3D preview, URDF, browser CAD | [design-and-3d.md](references/design-and-3d.md) |
+| "What computer/GPU/VRAM do I need?", cloud vs Mac/Linux/Windows | [hardware-requirements.md](references/hardware-requirements.md) |
+| Heavy compute as connectable servers (sim/train/render/inference MCP) | [docker-and-environments.md](references/docker-and-environments.md) § Advanced |
 | "How do I use this skill?" / new-user orientation | [TRAINING_MANUAL.md](TRAINING_MANUAL.md) |
 
 ## Teaching style

@@ -6,10 +6,12 @@
 > triage order, Kd ≈ Kp/20–50 ratio, dt-dependent complementary-filter coefficient).
 > The Gemini CLI (`GEMINI.md`) variant remains format-checked only.
 >
-> **Key finding: Gems cap knowledge at 10 files.** The 14 modules don't fit individually —
-> upload the 9 core files plus `advanced-modules.md` (compute-platforms + control-and-
-> stability + air-robots + ai-ml merged; TRAINING_MANUAL omitted — it's human onboarding,
-> not mentor knowledge). The release zip ships exactly this 10-file set.
+> **Key finding: Gems cap knowledge at 10 files.** The skill now has 18 reference modules,
+> far past that. The scaling fix: the whole skill ships as **one consolidated file**,
+> `robot-builder-complete.md` (every module, table-of-contents + `MODULE:` markers),
+> uploaded as the Gem's single knowledge file. This uses 1 of the 10 slots and never
+> outgrows the cap no matter how many modules are added. The release zip's `knowledge-gem/`
+> folder contains exactly that file plus `TRAINING_MANUAL.md`.
 
 ## A. Gemini CLI (for building alongside code)
 
@@ -32,8 +34,9 @@ global availability, append it to `~/.gemini/GEMINI.md`.
 3. **Instructions**: paste the body of [`GEMINI.md`](GEMINI.md) — it doubles as the Gem
    persona. Remove the file-path table if you skip step 4, or reword it to "your
    uploaded knowledge files".
-4. **Knowledge**: upload the 10 files from the release zip's `knowledge-gem/` folder
-   (9 core modules + `advanced-modules.md`) — Gems reject uploads beyond 10 files.
+4. **Knowledge**: upload `robot-builder-complete.md` from the release zip's `knowledge-gem/`
+   folder (the entire skill in one file) — optionally add `TRAINING_MANUAL.md`. One file
+   carries all 18 modules and stays well under the 10-file cap.
 5. Save and chat.
 
 ## C. Gemini API

@@ -150,16 +150,21 @@ robot-builder/
 ├── evals/evals.json             # test prompts used to QA the skill (not loaded at runtime)
 └── references/
     ├── parts-and-budgets.md     # what to buy, by budget × skill × domain
+    ├── hardware-requirements.md # what dev machine / GPU / cloud each task needs
+    ├── design-and-3d.md         # draft & 3D-preview a robot in the browser; URDF bridge
     ├── getting-started.md       # SD cards, firmware, controllers, first motion
     ├── compute-platforms.md     # MCUs, Pi, Jetson, flight controllers
     ├── sensors.md               # cameras, depth, lidar, IMU, GPS, encoders
     ├── ros.md                   # ROS 2 from zero to Nav2
     ├── ground-robots.md         # rovers, tanks, RC cars
     ├── water-robots.md          # boats, ROVs, AUVs
-    ├── air-robots.md            # drones, planes, helis, rockets + regulations
-    ├── control-and-stability.md # PID, filters, balancers, bipeds, flight/rocket stability
+    ├── air-robots.md            # drones, planes, helis, blimps, rockets + regulations
+    ├── manipulation-and-arms.md # robot arms, grippers, kinematics, MoveIt, grasping
+    ├── cnc-and-motion.md        # CNC routers, lasers, plotters, GRBL/FluidNC, G-code
+    ├── swarm-and-multi-robot.md # multi-robot coordination, formations, comms
+    ├── control-and-stability.md # PID, filters, balancers, hexapods, bipeds, flight stability
     ├── simulation-and-gyms.md   # Gazebo, SITL, MuJoCo, Isaac Lab, RL gyms, sim2real
-    ├── docker-and-environments.md # containers for ROS/sim/Jetson + Docker MCP setup
+    ├── docker-and-environments.md # containers for ROS/sim/Jetson, Docker MCP, compute servers
     ├── security.md              # network, internet, and cloud security
     └── ai-ml.md                 # vision, LLMs, learning-based control, limits
 ```
