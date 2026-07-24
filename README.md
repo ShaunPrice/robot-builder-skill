@@ -5,11 +5,11 @@
 # Robot Builder — a Claude skill for vibe-coding robots
 
 <p align="center">
-  <a href="https://youtu.be/QnRDa8EUHyM">
-    <img src="https://img.youtube.com/vi/QnRDa8EUHyM/maxresdefault.jpg" alt="Watch the Robot Builder intro on YouTube" width="70%"/>
+  <a href="https://youtu.be/Rb0PQtcP36o">
+    <img src="https://img.youtube.com/vi/Rb0PQtcP36o/maxresdefault.jpg" alt="Watch the Robot Builder intro on YouTube" width="70%"/>
   </a>
   <br/>
-  🎬 <a href="https://youtu.be/QnRDa8EUHyM"><b>Watch the intro on YouTube</b></a> — a narrated
+  🎬 <a href="https://youtu.be/Rb0PQtcP36o"><b>Watch the intro on YouTube</b></a> — a narrated
   tour: start free in your browser, grow to a full robotics lab, across every kind of robot
   (<a href="media/Robot-Builder-intro-v3.mp4">local copy — v3, 90s</a>).
 </p>
