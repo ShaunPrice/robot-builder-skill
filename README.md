@@ -71,16 +71,20 @@ python run_pid.py     # cascaded PID + disturbance shove → pid_run.png, pid_ba
 python train_rl.py    # PPO training + eval → learning_curve.png, rl_balancer.gif (~5 min)
 ```
 
-## And a flying one: the low-cost drone swarm
+## And a swarm: the achievable wheeled robot swarm
 
-A second worked example takes it airborne — a 3–5 unit swarm of **ESP32 micro-quadcopters**
-([examples/flying-swarm](examples/flying-swarm)), coordinated over an ESP-NOW mesh and
-**simulated end-to-end before any hardware is bought** (the skill's rule for anything that
-flies). [`swarm_sim.py`](examples/flying-swarm/swarm_sim.py) flies the mission *take off → V →
-ring orbit → regroup → land* with a centralized formation controller and altitude
-deconfliction — **zero collisions, 2 cm formation hold.** [`SWARM_BUILD.md`](examples/flying-swarm/SWARM_BUILD.md)
-has the full bill of materials with **US / UK / AU** vendors and costs (about **US $40** per
-drone; ~$280 for a five-drone swarm).
+A second worked example is a **3-robot wheeled swarm** ([examples/wheeled-swarm](examples/wheeled-swarm))
+that solves the problem which sinks most swarms — **localisation**. Each robot wears an **ArUco
+fiducial**, one **overhead webcam** reads them all, a laptop knows every robot's pose, and a
+**distance sensor** on each robot handles local avoidance. [`wheeled_swarm_sim.py`](examples/wheeled-swarm/wheeled_swarm_sim.py)
+runs the mission *scatter → triangle → translate → rotate → line → park* — **0 collisions, 1.3 cm
+formation hold, ~4 mm localisation error** (the camera keeps odometry drift bounded). It ships with
+ESP32 firmware, a webcam-ArUco coordinator, a printable chassis, an engineering sheet, and a full
+**US / UK / AU** BOM (~**$37/robot**, ~$146 for three plus one webcam).
+
+This is the skill's **achievable-swarm default**: it now asks *"how will each robot know where it and
+its neighbours are?"* first, and prefers this wheeled + fiducials + overhead-camera design over a
+flying swarm whose cheap indoor localisation doesn't exist.
 
 ## Installing the skill
 
