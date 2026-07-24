@@ -23,6 +23,25 @@ water, and air** (drones, fixed wing, helicopters, and hobby-legal rockets).
 It's one skill with 19 on-demand sub-skill modules, so a single question like *"make my
 drone follow me"* can draw on airframes + vision + control + safety at once.
 
+## Beginner → Expert: the ladder (and the cheapest way up each rung)
+
+You need no money, no hardware, and nothing installed to begin. The first three rungs are
+free in a browser tab — and designing and simulating *before* you buy is the cheapest way
+to be wrong. Climb only as far as your project needs.
+
+| Rung | What you do | Cheapest way to do it | Cost |
+|---|---|---|---|
+| **1. Explore free** | Learn ROS 2 (the software that runs most robots) and talk to the mentor | Free browser VS Code (GitHub Codespaces / Gitpod); a free Claude, ChatGPT, or Gemini chat, or a no-subscription Poe / Mistral Le Chat bot | **$0** |
+| **2. Design** | Draw your robot in 3D before buying a single part | The bundled browser Robot Drafter — nothing to install | **$0** |
+| **3. Simulate** | Drive, fly, and safely crash it; train a first vision model | Gazebo / ArduPilot SITL (flight simulator, no aircraft) in that same free Codespace; a free Google Colab GPU to train | **$0** |
+| **4. First hardware** | Your first real robot you can drive and then program | A coding-optional kit or RC car (no soldering), then a Raspberry Pi / ESP32 rover with a camera | **< $100 → $300** |
+| **5. Autonomy** | Add lidar/depth sensing, ROS 2, mapping and self-navigation | A Pi 5 plus an entry lidar or depth camera | **$300–800** |
+| **6. Expert** | Native ROS 2 + CUDA (GPU compute), Isaac Sim, reinforcement learning at scale, Docker-MCP GPU servers, real autonomy | **Rent** an NVIDIA RTX GPU by the hour (~$0.30–2/hr on RunPod / vast.ai / Lambda) instead of buying a $2,000+ card | **rent, or $2,500+** |
+
+Full ladder, an 8-week beginner path, and your first prompts live in the
+**[Training Manual](TRAINING_MANUAL.md)**; the free-chatbot hosting options are in
+**[setup-and-cloud.md](references/setup-and-cloud.md)**.
+
 ## See it work: the virtual self-balancing robot
 
 The repo ships a complete worked example — a two-wheel self-balancing robot **designed,

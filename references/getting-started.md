@@ -3,6 +3,8 @@
 This file covers rungs 2–3 of the ladder: getting an OS onto the robot's brain, getting a
 controller talking to it, and achieving safe first motion.
 
+> **Haven't bought the hardware yet? You may not need to spend anything.** You can design a robot in 3D, learn ROS, fly a simulator, and train a vision model entirely free in a browser first — see [setup-and-cloud.md](setup-and-cloud.md). This page is for when a board is actually in your hands. Buying *after* you know what you're building is the cheapest way to be wrong.
+
 ## Writing SD cards / flashing firmware
 
 ### Raspberry Pi (microSD)

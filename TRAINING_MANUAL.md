@@ -59,9 +59,14 @@ Start a conversation like one of these — plain language is fine:
 
 > "I bought a Jetson Orin Nano. Walk me through making a robot that follows me."
 
+> "I have no money yet and just want to learn. What can I do for free in a browser first?"
+
 Claude will ask about your **budget, experience, and goal**, then produce a shopping list
-and a build plan. Push back freely — "cheaper", "no soldering", "I already own X" — the
-plan adapts.
+and a build plan. Push back freely — "cheaper", "no soldering", "I already own X" — the plan
+adapts. You can also start with **zero money and zero installs**: design a robot, learn to
+code, and fly a simulator in your browser first, buying hardware only once you know what you
+want. And if a term like *teleop*, *SLAM*, or *YOLO* is new, that's fine — the skill defines
+every word in plain language the moment it comes up.
 
 ## 4. How the mentorship works: the build ladder
 
@@ -110,13 +115,15 @@ The day your robot joins Wi-Fi:
 
 ## 7. A suggested learning path (8 weeks, beginner)
 
-Weeks 1–5 fit a T1 budget (~$200 USD / ~A$300). Weeks 6–8 add ~$120 USD of T2 parts
-(encoder gearmotors + an entry lidar) — order them around week 4, or stop at week 5 with a
-fully driveable camera robot and upgrade later.
+Weeks 1–5 fit a T1 budget (~$200 USD / ~A$300), and **Week 0 costs nothing** — you design,
+code, and simulate in a browser first, and only buy once you know what you're building. Weeks
+6–8 add ~$120 USD of T2 parts (encoder gearmotors + an entry lidar) — order them around week
+4, or stop at week 5 with a fully driveable camera robot and upgrade later.
 
 | Week | Milestone | Ask Claude |
 |---|---|---|
-| 1 | Parts ordered; sim/tools while shipping | "Here's my budget — final shopping list?" |
+| 0 | Design a robot, write first code, fly a sim — free, zero install, in a browser | "Start me in the cloud before I buy anything" |
+| 1 | Parts ordered; keep simulating while they ship | "Here's my budget — final shopping list?" |
 | 2 | Pi flashed, SSH working, LED blinks | "Walk me through flashing and first boot" |
 | 3 | Motors turn on the bench | "Wire the motor driver with me" |
 | 4 | Gamepad teleop + watchdog stop | "Connect my Xbox controller and write teleop" |

@@ -21,7 +21,7 @@ build ladder's rungs:
 |---|---|---|
 | **Design** a robot and see it in 3D | the Robot Drafter (see design-and-3d.md) | none |
 | **Learn ROS 2 and write code** | GitHub Codespaces or Gitpod — browser VS Code on an Ubuntu container; run the `ros:jazzy` image inside it | none (a free account) |
-| **Fly a simulator** | ArduPilot / PX4 SITL on any small cloud Linux VM (see simulation-and-gyms.md) | none |
+| **Fly a simulator** | ArduPilot / PX4 SITL — runs inside the same free Codespace/Gitpod above, no separate machine (see simulation-and-gyms.md) | none |
 | **Train a vision model** | Google Colab — a free browser notebook with a GPU, for YOLO or small RL (see hardware-requirements.md) | none |
 | **Rent serious GPU** by the hour | RunPod / Lambda / vast.ai for Isaac Sim or heavy training | none |
 | **Talk to the mentor** | Claude, ChatGPT, or Gemini | none |
@@ -105,10 +105,20 @@ attach documents can host it. What changes across users is where the model runs 
 it costs — match it to the machine:
 
 - **Cheapest, works on any machine (Windows 11 Home, a basic Mac, a Chromebook) — a free
-  cloud chatbot, zero install.** Open a free chat in Claude, ChatGPT, or Gemini, attach
-  `robot-builder-complete.md`, paste the persona line, and go. For a persistent version, a
-  Claude skill / Custom GPT / Gemini Gem (the repo's `builds/`) — note that *creating* one
-  can need a low paid tier, though using it is cheap.
+  cloud chatbot, zero install.** For a one-off chat, open a free **Claude, ChatGPT, Gemini,
+  or Mistral Le Chat** session, attach `robot-builder-complete.md`, paste the persona line,
+  and go. **Mistral Le Chat** (chat.mistral.ai) is the pick when you want **$0 with no
+  subscription and no card** — it takes the `.md` file *natively* as a knowledge "Library"
+  (soft-capped around 25 messages/day). To make the mentor **persistent and shareable for
+  free**, build a **Poe bot** (poe.com): paste the persona as its *Prompt* and upload the
+  knowledge file as its *Knowledge Base*, and Poe retrieves and cites the right passages
+  from your file — that's **RAG** (retrieval-augmented generation: the bot answers *from
+  your file*, not from guesswork) — behind a `poe.com/YourBot` link a learner just clicks.
+  Building is free (light Q&A rides Poe's daily points; heavy use is ~$5/mo); Poe wants the
+  file as `.txt` rather than `.md`, and the click-by-click steps are in the repo README.
+  Already paying for one assistant? A Claude skill / Custom GPT / Gemini Gem (the repo's
+  `builds/`) does the same job, but *creating* those can need a paid tier — Le Chat and Poe
+  do not, so reach for them first.
 - **Local, no Docker, no subscription (privacy/offline).** A native desktop app is the
   answer. **AnythingLLM** fits best: a workspace is exactly "a system prompt + uploaded
   documents", it runs a small local model or a cheap API key, and it installs on

@@ -10,6 +10,7 @@ a local vendor (e.g. Core Electronics in AU) before finalizing a list. Always re
 
 | Tier | Budget | Skill floor | What you get | Typical build |
 |---|---|---|---|---|
+| **$0 "Try it"** | **$0** | Beginner | Design, code, simulate, and train — all in a browser, buy nothing yet | Cloud sandbox (see setup-and-cloud.md) |
 | T0 "Drive it" | < $100 | Beginner | Controller-only fun, no code required (code optional) | RC car kit, micro:bit/ESP32 robot kit |
 | T1 "Code it" | $100–300 | Beginner | Programmable rover with camera | Pi 4/5 or ESP32 rover kit + Pi Camera |
 | T2 "Sense it" | $300–800 | Intermediate | Autonomy-capable ground/water robot, or entry aircraft | Pi 5 rover + lidar or depth cam; ArduPilot boat; 5" FPV quad |
@@ -117,6 +118,9 @@ tier, work backwards from the mission; don't buy hardware speculatively.
   chassis/brackets, risky for chargers/batteries).
 - **Australia**: Core Electronics (Pi/Jetson/sensors, local support), Little Bird, Phaser
   FPV / Mantis FPV (drones), local hobby shops for LiPos.
+- **Buy used** for big-ticket items — Jetson boards, depth cameras (RealSense/OAK-D), and
+  chassis often turn up secondhand at 30–50% off. (Raspberry Pis hold their value; used ones
+  rarely beat retail, and cost *more* during shortages — buy those new from an official reseller.)
 - Advise against no-name LiPo chargers from marketplace sellers — chargers are a
   fire-safety item; buy known brands (ISDT, ToolkitRC, SkyRC).
 

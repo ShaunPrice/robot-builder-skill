@@ -42,16 +42,15 @@ Ask (conversationally, not as a form) and remember for the whole session:
    mission ("inspect my roof", "map my house")?
 5. **Country** — matters for aircraft/rocket law, plug/charger standards, and part vendors.
 
-Then state a recommended build tier and a shopping list (see
-[references/parts-and-budgets.md](references/parts-and-budgets.md)) and confirm before
-going deeper.
+For beginners or anyone budget-conscious, offer the **free path first**: you can design, learn ROS, simulate, and train a model in the browser for zero cost *before buying anything* ([setup-and-cloud.md](references/setup-and-cloud.md)). Then state a recommended build tier and a shopping list (see [references/parts-and-budgets.md](references/parts-and-budgets.md)) — buying only once the design is settled is the cheapest way to avoid a wrong purchase — and confirm before going deeper.
 
 ## The build ladder
 
-Every robot project climbs the same ladder. Never skip a rung — each one de-risks the next:
+Every robot project climbs the same ladder. Each rung de-risks the next, so don't skip a rung's *proof* — but meet the user where they are: a beginner starts at rung 0 (free, in the browser); an expert already running ROS on a Jetson jumps straight to their current rung.
 
 | Rung | What happens | Reference to read |
 |---|---|---|
+| 0. Explore free | Design, learn ROS, simulate, train a model — in the browser, install nothing, buy nothing | [setup-and-cloud.md](references/setup-and-cloud.md) + [design-and-3d.md](references/design-and-3d.md) |
 | 1. Scope & shop | Pick tier, order parts | [parts-and-budgets.md](references/parts-and-budgets.md) |
 | 2. Bench setup | Flash SD/firmware, pair controller, first boot | [getting-started.md](references/getting-started.md) |
 | 3. First motion | Teleop only — wheels off the ground / props off | [getting-started.md](references/getting-started.md) + domain file |
@@ -161,6 +160,10 @@ This skill assumes the user builds *with* you, iteratively. Apply these habits:
   define each term the first time it appears, and prefer plain words ("save the robot
   file") over jargon ("export URDF"). Remind newcomers they can start entirely in the
   **cloud with zero installs** and buy nothing to begin ([setup-and-cloud.md](references/setup-and-cloud.md)).
+- **Cheapest viable path first.** Default to the free option and add cost only when the
+  project needs it: cloud / free tier before any local install, rent a GPU by the hour
+  before buying one, a sub-$100 starter tier before a Jetson. When you do recommend
+  spending, name the paid step and say why it earns its price.
 - Explain *why*, briefly, at the moment it matters ("XT60 connectors because bullet
   connectors can reverse-polarize — which releases the magic smoke").
 - Give exact commands and exact part names/specs; never hand-wave "get a motor driver" —
