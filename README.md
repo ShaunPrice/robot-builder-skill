@@ -71,6 +71,17 @@ python run_pid.py     # cascaded PID + disturbance shove → pid_run.png, pid_ba
 python train_rl.py    # PPO training + eval → learning_curve.png, rl_balancer.gif (~5 min)
 ```
 
+## And a flying one: the low-cost drone swarm
+
+A second worked example takes it airborne — a 3–5 unit swarm of **ESP32 micro-quadcopters**
+([examples/flying-swarm](examples/flying-swarm)), coordinated over an ESP-NOW mesh and
+**simulated end-to-end before any hardware is bought** (the skill's rule for anything that
+flies). [`swarm_sim.py`](examples/flying-swarm/swarm_sim.py) flies the mission *take off → V →
+ring orbit → regroup → land* with a centralized formation controller and altitude
+deconfliction — **zero collisions, 2 cm formation hold.** [`SWARM_BUILD.md`](examples/flying-swarm/SWARM_BUILD.md)
+has the full bill of materials with **US / UK / AU** vendors and costs (about **US $40** per
+drone; ~$280 for a five-drone swarm).
+
 ## Installing the skill
 
 **Claude Code** (CLI, desktop, VS Code) — available in every project:
