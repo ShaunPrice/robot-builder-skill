@@ -12,7 +12,7 @@
   Every command here is also documented step-by-step in references/getting-started.md and
   references/docker-and-environments.md — this script is a convenience, not a black box.
 #>
-param([switch]$Yes)
+param([switch]$Yes, [switch]$WithChatbot)
 
 $ErrorActionPreference = "Stop"
 $RosImage = if ($env:ROS_IMAGE) { $env:ROS_IMAGE } else { "osrf/ros:jazzy-desktop" }
@@ -71,6 +71,22 @@ if ($LASTEXITCODE -eq 0){
 } else {
   Info "The image pulled but the ROS 2 check failed. Try: docker run -it --rm $RosImage bash"
   exit 1
+}
+
+if ($WithChatbot){
+  Say "Optional: local no-Docker chatbot backend (Ollama + a small model)…"
+  if (-not (Have "ollama")){
+    if (Have "winget"){ if (Ask "Install Ollama via winget?"){ winget install -e --id Ollama.Ollama --accept-source-agreements --accept-package-agreements } }
+    else { Info "Install Ollama from ollama.com, then re-run with -WithChatbot." }
+  }
+  if (Have "ollama"){ Info "Pulling a small local model (llama3.2:3b, ~2 GB)…"; ollama pull llama3.2:3b }
+  Info "Install the AnythingLLM desktop app from anythingllm.com — the no-Docker chat UI."
+  Write-Host @"
+  Your local mentor (offline, no Docker, no subscription):
+    1. Open AnythingLLM, create a Workspace, point it at Ollama (model: llama3.2:3b).
+    2. Set the workspace system prompt to builds\hermes\system-prompt.md.
+    3. Upload robot-builder-complete.md as the workspace knowledge.
+"@
 }
 
 Write-Host @"

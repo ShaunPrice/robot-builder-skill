@@ -96,3 +96,34 @@ Design first in design-and-3d.md, pick a host with hardware-requirements.md, fla
 first-boot with getting-started.md, and containerize or serve heavy compute with
 docker-and-environments.md. The cloud-first order means you will have used ROS and a
 simulator before you ever plug anything in.
+
+## Which chatbot should I run this mentor in?
+
+Because the skill is a persona prompt plus one knowledge file (the consolidated
+`robot-builder-complete.md`), almost any chatbot that lets you set a system prompt and
+attach documents can host it. What changes across users is where the model runs and what
+it costs — match it to the machine:
+
+- **Cheapest, works on any machine (Windows 11 Home, a basic Mac, a Chromebook) — a free
+  cloud chatbot, zero install.** Open a free chat in Claude, ChatGPT, or Gemini, attach
+  `robot-builder-complete.md`, paste the persona line, and go. For a persistent version, a
+  Claude skill / Custom GPT / Gemini Gem (the repo's `builds/`) — note that *creating* one
+  can need a low paid tier, though using it is cheap.
+- **Local, no Docker, no subscription (privacy/offline).** A native desktop app is the
+  answer. **AnythingLLM** fits best: a workspace is exactly "a system prompt + uploaded
+  documents", it runs a small local model or a cheap API key, and it installs on
+  Windows/Mac/Linux with **no Docker**. Alternatives: **Jan, LM Studio, GPT4All, Msty**.
+  The local model engine underneath is **Ollama** (native installers, no Docker). The setup
+  scripts' `--with-chatbot` flag installs Ollama plus a small model for you. On a weak
+  laptop only 3–4B models run, and slowly; an Apple-Silicon Mac runs 7–8B comfortably; if
+  local is too weak, plug a cheap **OpenRouter or Groq** API key into the same app for
+  cloud-grade answers at cents per session. (Windows 11 Home *can* run Docker/WSL2 if you
+  ever want it — you simply do not need it for this.)
+- **Experienced, with real compute (AWS/Azure, a gaming rig, a university cluster).** Larger
+  local models via **Ollama / LM Studio / vLLM**, fronted by **Open WebUI** or **LibreChat**
+  (Docker is fine at this tier); or the plain **API route** for the best quality; or the
+  repo's Hermes/OpenClaw adapters plus the Docker-MCP compute-server model
+  (docker-and-environments.md) for agentic, tool-using control.
+
+Every tier "installs the skill" the same way — **one file plus one persona prompt** — which
+is exactly why the whole skill is also shipped as that single consolidated file.

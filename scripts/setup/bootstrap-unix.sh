@@ -13,8 +13,11 @@
 set -euo pipefail
 
 ROS_IMAGE="${ROS_IMAGE:-osrf/ros:jazzy-desktop}"
-ASSUME_YES=0
-[ "${1:-}" = "--yes" ] || [ "${1:-}" = "-y" ] && ASSUME_YES=1
+ASSUME_YES=0; WITH_CHATBOT=0
+for arg in "$@"; do case "$arg" in
+  --yes|-y) ASSUME_YES=1;;
+  --with-chatbot) WITH_CHATBOT=1;;
+esac; done
 
 say(){ printf '\n\033[1;36m▶ %s\033[0m\n' "$*"; }
 info(){ printf '  %s\n' "$*"; }
@@ -54,6 +57,29 @@ install_docker_linux(){
   fi
   sudo systemctl enable --now docker 2>/dev/null || sudo service docker start 2>/dev/null || true
 }
+install_chatbot(){ # optional: a no-Docker local chatbot backend (Ollama + a small model)
+  say "Optional: local no-Docker chatbot backend (Ollama + a small model)…"
+  if have ollama; then info "Ollama already installed."; else
+    case "$OS" in
+      Darwin) ask "Install Ollama via Homebrew?" && brew install ollama || return 0;;
+      Linux)  ask "Install Ollama (official script from ollama.com)?" && curl -fsSL https://ollama.com/install.sh | sh || return 0;;
+    esac
+  fi
+  info "Pulling a small local model (llama3.2:3b, ~2 GB)…"
+  ollama pull llama3.2:3b || info "Model pull skipped — run 'ollama pull llama3.2:3b' later."
+  if [ "$OS" = Darwin ] && have brew; then
+    ask "Install the AnythingLLM desktop app (the chat UI — no Docker)?" && brew install --cask anythingllm || true
+  else
+    info "Install the AnythingLLM desktop app from anythingllm.com (Linux: AppImage) — the no-Docker chat UI."
+  fi
+  cat <<EOF2
+
+  Your local mentor (offline, no Docker, no subscription):
+    1. Open AnythingLLM, create a Workspace, and point it at Ollama (model: llama3.2:3b).
+    2. Set the workspace system prompt to the Robot Builder persona (builds/hermes/system-prompt.md).
+    3. Upload robot-builder-complete.md as the workspace knowledge (see the Gemini build zip, or generate it).
+EOF2
+}
 
 if have docker; then
   say "Docker is already installed — good."
@@ -84,6 +110,8 @@ else
   info "The image pulled but the ROS 2 check failed. Try: docker run -it --rm $ROS_IMAGE bash"
   exit 1
 fi
+
+[ "$WITH_CHATBOT" = 1 ] && install_chatbot
 
 cat <<EOF
 

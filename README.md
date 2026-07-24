@@ -9,9 +9,9 @@
     <img src="https://img.youtube.com/vi/QnRDa8EUHyM/maxresdefault.jpg" alt="Watch the Robot Builder intro on YouTube" width="70%"/>
   </a>
   <br/>
-  🎬 <a href="https://youtu.be/QnRDa8EUHyM"><b>Watch the 70-second intro on YouTube</b></a> —
-  narrated tour of the skill and its simulated self-balancing robot
-  (<a href="media/Robot-Builder-intro-v1.mp4">local copy</a>).
+  🎬 <a href="https://youtu.be/QnRDa8EUHyM"><b>Watch the intro on YouTube</b></a> — a narrated
+  tour: start free in your browser, grow to a full robotics lab, across every kind of robot
+  (<a href="media/Robot-Builder-intro-v2.mp4">local copy — v2, 90s</a>).
 </p>
 
 **Robot Builder** turns Claude into a robotics mentor and build partner: it walks you from
