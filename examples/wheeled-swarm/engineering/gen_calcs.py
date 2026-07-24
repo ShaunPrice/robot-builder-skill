@@ -48,9 +48,9 @@ c("A2", "Yellow = edit these for your parts. Everything else auto-calculates. "
 section(4, "1)  WEIGHT")
 for col, t in zip("ABCD", ["Component", "Qty", "Unit g", "Total g"]):
     c(f"{col}5", t, font=B, bd=True, align="center" if col != "A" else "left")
-comps = [("Chassis (3D-printed, ~40% infill)", 1, 14.0), ("TT gear motor + wheel", 2, 32.0),
+comps = [("Chassis (3D-printed, ~40% infill)", 1, 15.0), ("TT gear motor + wheel", 4, 35.0),
          ("Motor driver (DRV8833)", 1, 2.0), ("ESP32 board", 1, 8.0),
-         ("VL53L0X distance sensor", 1, 1.5), ("Ball caster", 1, 6.0),
+         ("HC-SR04 ultrasonic sensor", 1, 9.0),
          ("Wiring / connectors", 1, 6.0), ("ArUco tag (paper)", 1, 0.5)]
 r0 = 6
 for i, (name, q, um) in enumerate(comps):
@@ -96,7 +96,7 @@ ws["B27"].number_format = "0.0"
 # 3) POWER / RUNTIME
 section(29, "3)  POWER / RUNTIME")
 kv(30, "Motor running current (each)", 0.20, "A", "input — TT motor, light load", inp=True)
-kv(31, "Number of motors", 2, "", "", inp=True, num="0")
+kv(31, "Number of motors", 4, "", "", inp=True, num="0")
 kv(32, "Electronics current (ESP32+ToF)", 0.12, "A", "", inp=True)
 kv(33, "Battery capacity", 2000, "mAh", "input — 4×AA NiMH ~2000, LiPo varies", inp=True, num="0")
 kv(34, "Usable capacity fraction", 0.8, "", "", inp=True, num="0.00")

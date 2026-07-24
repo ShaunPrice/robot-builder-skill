@@ -38,36 +38,41 @@ bounded). Mission: *scatter → gather into a triangle → translate → rotate 
 
 ## Bill of materials — ONE robot
 
-Approximate **2026 street prices**, local currency per region. Electronics from **Core Electronics
-(AU) / Adafruit (US) / The Pi Hut (UK)**; the webcam from anywhere. Always check current pricing.
+A **DIY 4-wheel robot** on a 3D-printed chassis. Because we fix these exact parts, all three robots
+are **identical**. **AU $ prices are live from Core Electronics** (verified 2026‑07‑24 — check current);
+US/UK are approximate from Adafruit / The Pi Hut (usually cheaper than AU).
 
-| Part | What it does | US $ | UK £ | AU $ |
-|---|---|---:|---:|---:|
-| ESP32 dev board | Robot brain **and** ESP-NOW radio | 8 | 7 | 11 |
-| 2 × TT gear motor + wheel | Drive | 6 | 5 | 9 |
-| DRV8833 motor driver | Lets the ESP32 drive the motors | 5 | 5 | 9 |
-| VL53L0X time-of-flight sensor | Local obstacle / collision stop | 6 | 6 | 11 |
-| Ball caster | Third contact point (front) | 2 | 2 | 4 |
-| 4 × AA holder + NiMH cells | Power | 6 | 5 | 9 |
-| Jumper wires + headers | Wiring | 3 | 3 | 5 |
-| 3D-printed chassis | Holds it together ([`cad/chassis.stl`](cad/chassis.stl)) | 1 | 1 | 1 |
-| Printed ArUco tag | The fiducial ([`cad/make_tags.py`](cad/make_tags.py)) | — | — | — |
-| **PER ROBOT** | | **≈ $37** | **≈ £34** | **≈ AU $59** |
+| Part | Core (AU) | Qty | AU $ ea | AU $ | US $ approx |
+|---|---|---:|---:|---:|---:|
+| DC Gearbox **TT motor** 200 RPM 3–6 V | Adafruit | 4 | 7.35 | 29.40 | ~10 |
+| **TT wheel** 65 mm | Adafruit | 4 | 4.95 | 19.80 | ~6 |
+| **ESP32 dev board** (brain **+** ESP-NOW radio) | XIAO ESP32‑C3 | 1 | 10.65 | 10.65 | ~7 |
+| **DRV8833** dual motor driver (2 left + 2 right motors) | Adafruit | 1 | 11.95 | 11.95 | ~5 |
+| **HC‑SR04** ultrasonic distance sensor (local avoidance) | Core | 1 | 1.95 | 1.95 | ~2 |
+| 4×AA holder + NiMH cells (or 2× 18650) | — | 1 | ~7 | ~7 | ~5 |
+| Jumper wires + headers + heatshrink | — | 1 | ~5 | ~5 | ~4 |
+| **3D-printed chassis** ([`cad/chassis.stl`](cad/chassis.stl)) | filament | 1 | ~1 | ~1 | ~1 |
+| Printed **ArUco tag** ([`cad/make_tags.py`](cad/make_tags.py)) | paper | 1 | free | 0 | 0 |
+| **PER ROBOT** | | | | **≈ AU $87** | **≈ US $40** |
 
 ### Shared gear (buy once for the whole swarm)
 
-| Part | US $ | UK £ | AU $ | Notes |
-|---|---:|---:|---:|---|
-| USB overhead webcam (720p+) | 25 | 22 | 40 | The localisation system |
-| Ceiling / tripod camera mount | 10 | 9 | 18 | Looks straight down at the area |
-| Ground-station laptop | — | — | — | Runs the coordinator (you have one) |
+| Part | AU $ | Notes |
+|---|---:|---|
+| USB overhead webcam (720p+) | ~40 | The localisation system — or use a phone / a webcam you own |
+| Webcam mount / small tripod | ~18 | Looks straight down at the play area |
+| Ground-station laptop | — | Runs the coordinator (you have one) |
 
 ### What it costs, end to end
 
-| | US $ | UK £ | AU $ |
-|---|---:|---:|---:|
-| **One robot** | ~$37 | ~£34 | ~$59 |
-| **3-robot swarm + shared gear** | **~$146** | **~£133** | **~$235** |
+| | AU $ |
+|---|---:|
+| **One robot** | ~$87 |
+| **3-robot swarm + webcam** | **~$300** (~$260 if you already own a webcam) |
+
+*Prefer no soldering/printing? Two turnkey ESP32 4-wheel options at Core: **Waveshare WAVE ROVER**
+(WS‑25376, $179.95, 4WD + onboard ESP32) or **ACEBOTT ESP32 Smart Car** (CE10126, $129.95, mecanum,
+ultrasonic included).*
 
 ## Safety (gentle, but not zero)
 

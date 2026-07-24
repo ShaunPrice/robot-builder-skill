@@ -20,7 +20,7 @@ on each robot handles local avoidance. Designed and simulated end-to-end with th
 | [`BUILD_INSTRUCTIONS.md`](BUILD_INSTRUCTIONS.md) | Assembly, wiring, flashing, camera setup, wheels-up bring-up. |
 | [`wheeled_swarm_sim.py`](wheeled_swarm_sim.py) | Physics sim: 3 robots localised by an overhead camera + fiducials (odometry between frames) + distance-sensor avoidance. Mission *scatter → triangle → translate → rotate → line → park*. |
 | `wheeled_telemetry.png` | A run's telemetry — formation error, min separation (0 collisions), and localisation error (~4 mm, bounded by the camera). |
-| [`firmware/robot/`](firmware/robot/robot.ino) | ESP32 robot firmware — receives (v, ω) over ESP-NOW, drives the DRV8833, reads the VL53L0X for a local emergency stop, fails safe on link loss. |
+| [`firmware/robot/`](firmware/robot/robot.ino) | ESP32 robot firmware — receives (v, ω) over ESP-NOW, drives 4 motors via the DRV8833 (2 per side, skid-steer), reads an HC-SR04 for a local emergency stop, fails safe on link loss. |
 | [`firmware/coordinator_bridge/`](firmware/coordinator_bridge/coordinator_bridge.ino) | Spare ESP32 that relays the laptop's per-robot commands over ESP-NOW. |
 | [`coordinator/swarm_coordinator.py`](coordinator/swarm_coordinator.py) | Laptop coordinator — **ArUco detection** from the webcam → the same formation controller as the sim → (v, ω) to the bridge. `--sim` previews with no hardware. |
 | [`engineering/swarm-robot-calcs.xlsx`](engineering/swarm-robot-calcs.xlsx) | Weight / drive / power sheet with live formulas (AUW, cruise speed, torque margin, run time). ([`gen_calcs.py`](engineering/gen_calcs.py)) |
